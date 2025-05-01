@@ -1,0 +1,53 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바이오닷 데이터 시각화 대시보드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.2.2/wordcloud2.min.js"></script>
+</head>
+<body>
+    <!-- 🔄 로딩 메시지 -->
+    <div id="page-loading-message" class="loading-message">
+        <h2>바이오닷 대시보드로 이동 중...</h2>
+        <p>잠시만 기다려주세요.</p>
+    </div>
+    
+    <header>
+        <div class="container">
+            <h1>바이오닷 데이터 시각화 대시보드</h1>
+            <nav>
+                <ul style="list-style: none; display: flex; gap: 20px;">
+                    <li><a href="index.html" style="color: #3498db; font-weight: bold;">홈</a></li>
+                    <li><a href="survey.html">설문조사 분석</a></li>
+                    <li><a href="ecommerce.html">이커머스 분석</a></li>
+                    <li><a href="text-analysis.html">텍스트 분석</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section style="text-align: center; margin-top: 40px;">
+            <img src="image/녹용유입단.png" alt="녹용 유입단" style="max-width: 100%; height: auto; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" />
+          </section>  
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('page-loading-message').style.display = 'none';
+            // 여기에 Chart.js 시각화 초기화
+        });
+    </script>
+</body>
+</html>

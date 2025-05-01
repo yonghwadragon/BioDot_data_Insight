@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>설문조사 분석 - 바이오닷 데이터 시각화</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div id="page-loading-message" class="loading-message">
+    <h2>바이오닷 대시보드로 이동 중...</h2>
+    <p>잠시만 기다려주세요.</p>
+  </div>
+
+  <header>
+    <div class="container">
+      <h1>바이오닷 데이터 시각화 대시보드</h1>
+      <nav>
+        <ul style="list-style: none; display: flex; gap: 20px;">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="survey.html" style="font-weight: bold; color: #3498db;">설문조사 분석</a></li>
+          <li><a href="ecommerce.html">이커머스 분석</a></li>
+          <li><a href="text-analysis.html">텍스트 분석</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>설문조사 분석</h2>
+
+      <div class="chart-container"><canvas id="ageChart"></canvas></div>
+      <div class="chart-container"><canvas id="genderChart"></canvas></div>
+      <div class="chart-container"><canvas id="jobChart"></canvas></div>
+      <div class="chart-container"><canvas id="supplementChart"></canvas></div>
+      <div class="chart-container"><canvas id="frequencyChart"></canvas></div>
+      <div class="chart-container"><canvas id="reasonChart"></canvas></div>
+      <div class="chart-container"><canvas id="criteriaChart"></canvas></div>
+      <div class="chart-container"><canvas id="purchaseChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerKnowledgeChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerExperienceChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerImageChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerBarrierChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerAppealChart"></canvas></div>
+      <div class="chart-container"><canvas id="recommendationChart"></canvas></div>
+      <div class="chart-container"><canvas id="reelsStyleChart"></canvas></div>
+      <div class="chart-container"><canvas id="instagramActionChart"></canvas></div>
+      <div class="chart-container"><canvas id="reelsInterestChart"></canvas></div>
+      <div class="chart-container"><canvas id="keywordChart"></canvas></div>
+
+      <div class="card">
+        <h3>과거 섭취 중단 사유 (랜덤)</h3>
+        <ul id="deerStopReasons"></ul>
+      </div>
+      <div class="card">
+        <h3>친숙화 전략 제안 (랜덤)</h3>
+        <ul id="friendlyStrategies"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
+    </div>
+  </footer>
+
+  <script src="js/charts.js"></script>
+  <script src="js/charts_survey_v2.js"></script>
+</body>
+</html>

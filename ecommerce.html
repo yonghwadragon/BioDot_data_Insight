@@ -1,0 +1,103 @@
+<!-- 개선된 ecommerce.html (평균 평점 정렬) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>바이오닷 - 이커머스 분석</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div id="page-loading-message" class="loading-message">
+    <h2>바이오닷 대시보드로 이동 중...</h2>
+    <p>잠시만 기다려주세요.</p>
+  </div>
+
+  <header>
+    <div class="container">
+      <h1>바이오닷 이커머스 분석</h1>
+      <nav>
+        <ul style="list-style: none; display: flex; gap: 20px;">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="survey.html">설문조사 분석</a></li>
+          <li><a href="ecommerce.html" style="color: #3498db; font-weight: bold;">이커머스 분석</a></li>
+          <li><a href="text-analysis.html">텍스트 분석</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <canvas id="reviewCountChart"></canvas>
+      <canvas id="ratingChart"></canvas>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loading = document.getElementById('page-loading-message');
+
+      fetch('data/한동녹용연구소_이커머스데이터__2025-04-25.xlsx')
+        .then(res => res.arrayBuffer())
+        .then(data => {
+          const wb = XLSX.read(data, { type: 'array' });
+          const sheet = wb.Sheets['products'];
+          const rows = XLSX.utils.sheet_to_json(sheet);
+
+          // ① 리뷰 수 기준 정렬
+          const sortedByReview = [...rows].sort((a, b) => b['리뷰수'] - a['리뷰수']);
+          const labelsReview = sortedByReview.map(r => r['제품명']);
+          const reviewCounts = sortedByReview.map(r => r['리뷰수']);
+
+          new Chart(document.getElementById('reviewCountChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: labelsReview,
+              datasets: [{
+                label: '리뷰 수',
+                data: reviewCounts,
+                backgroundColor: 'rgba(255, 99, 132, 0.5)'
+              }]
+            }
+          });
+
+          // ② 평균 평점 기준 정렬
+          const sortedByRating = [...rows].sort((a, b) => b['실제 평균 리뷰별점'] - a['실제 평균 리뷰별점']);
+          const labelsRating = sortedByRating.map(r => r['제품명']);
+          const avgRatings = sortedByRating.map(r => r['실제 평균 리뷰별점']);
+
+          new Chart(document.getElementById('ratingChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: labelsRating,
+              datasets: [{
+                label: '평균 평점',
+                data: avgRatings,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)'
+              }]
+            },
+            options: {
+              scales: {
+                y: { beginAtZero: true, max: 5 }
+              }
+            }
+          });
+        })
+        .catch(err => console.error(err))
+        .finally(() => {
+          loading.style.display = 'none';
+        });
+    });
+  </script>
+</body>
+</html>
