@@ -102,20 +102,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     const currentYear = new Date().getFullYear();
 
     // 연령대 분포
-    const ageGroups = { '10대':0, '20대':0, '30대':0, '40대':0, '50대 이상':0 };
+    const generationDetailGroups = {
+      '청소년 이하 (2007이하, 18세 이하)': 0,
+      'Z세대 (1997~2006, 19~28세)': 0,
+      '밀레니얼세대 (1987~1996, 29~38세)': 0,
+      '중장년층 (1986이상, 39세 이상)': 0
+    };
+    
     rows.forEach(r => {
-      const b = parseInt(r['출생년도']);
-      if (!isNaN(b)) {
-        const age = currentYear - b;
-        if (age < 20)       ageGroups['10대']++;
-        else if (age < 30)  ageGroups['20대']++;
-        else if (age < 40)  ageGroups['30대']++;
-        else if (age < 50)  ageGroups['40대']++;
-        else                ageGroups['50대 이상']++;
+      const y = parseInt(r['출생년도']);
+      if (!isNaN(y)) {
+        if (y <= 1986)        generationDetailGroups['중장년층 (1986이상, 39세 이상)']++;
+        else if (y <= 1996)   generationDetailGroups['밀레니얼세대 (1987~1996, 29~38세)']++;
+        else if (y <= 2006)   generationDetailGroups['Z세대 (1997~2006, 19~28세)']++;
+        else                  generationDetailGroups['청소년 이하 (2007이하, 18세 이하)']++;
       }
     });
-    createBarChart('ageChart', Object.keys(ageGroups), Object.values(ageGroups), '연령대 분포');
+     // 젊은 세대 → 중장년 순서로 수동 정렬
+    const labels = [
+      '청소년 이하 (2007이하, 18세 이하)',
+      'Z세대 (1997~2006, 19~28세)',
+      '밀레니얼세대 (1987~1996, 29~38세)',
+      '중장년층 (1986이상, 39세 이상)'
+    ];
 
+    const values = labels.map(label => generationDetailGroups[label]);
+
+    createBarChart('ageChart', labels, values, '세대별 상세 분포');
+    
     // 성별 분포
     renderPieWithPercent('genderChart', countValues(rows, '성별'), '성별 분포');
 
