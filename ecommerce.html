@@ -1,10 +1,9 @@
-<!-- 개선된 ecommerce.html (평균 평점 정렬) -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>바이오닷 - 이커머스 분석</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>바이오닷 이커머스 분석 (가중평점 추가)</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,10 +19,10 @@
     <div class="container">
       <h1>바이오닷 이커머스 분석</h1>
       <nav>
-        <ul style="list-style: none; display: flex; gap: 20px;">
+        <ul style="list-style:none; display:flex; gap:20px;">
           <li><a href="index.html">홈</a></li>
           <li><a href="survey.html">설문조사 분석</a></li>
-          <li><a href="ecommerce.html" style="color: #3498db; font-weight: bold;">이커머스 분석</a></li>
+          <li><a href="ecommerce.html" style="color:#3498db; font-weight:bold;">이커머스 분석</a></li>
           <li><a href="text-analysis.html">텍스트 분석</a></li>
         </ul>
       </nav>
@@ -32,9 +31,42 @@
 
   <main class="container">
     <section>
+      <h2>1) 리뷰 수 기준 정렬</h2>
       <canvas id="reviewCountChart"></canvas>
+    </section>
+    <section>
+      <h2>2) 평균 평점 기준 정렬</h2>
       <canvas id="ratingChart"></canvas>
     </section>
+
+    <section style="margin-top:40px;">
+      <h2>가중평점 계산 설명</h2>
+      <p>리뷰가 적으면 숫자 하나로는 믿기 어려우니까, 모두의 평균을 조금 섞어서 계산해요.</p>
+      <ul>
+        <li>📊 전체 평균 평점: <strong>3.93점</strong> (모든 상품의 평균)</li>
+        <li>🔢 최소 리뷰 수 기준: <strong>40개</strong> (이 정도면 “믿을 만하다”고 판단)</li>
+      </ul>
+      <p>✏️ <strong>공정한 평점 공식</strong>:</p>
+      <pre style="background:#f0f0f0; padding:10px;">
+    (⭐ 평균점수 × 리뷰수 + 🎯 초깃값 × 🧮 기준리뷰수) ÷ (리뷰수 + 🧮 기준리뷰수)
+  = (리뷰수 / (리뷰수 + 🧮 40)) × ⭐ 평균점수 + (🧮 40 / (리뷰수 + 🧮 40)) × 🎯 3.93 </pre>
+      <p>🍰 예시:</p>
+      <ol>
+        <li><strong>A 케이크</strong> (리뷰 2개, 평점 5.0)<br>
+          → (2/42)×5.0 + (40/42)×3.93 ≈ <strong>3.98점</strong>
+        </li>
+        <li><strong>B 케이크</strong> (리뷰 100개, 평점 4.2)<br>
+          → (100/140)×4.2 + (40/140)×3.93 ≈ <strong>4.12점</strong>
+        </li>
+      </ol>
+      <p>“리뷰가 많으면 진짜 평점을, 적으면 평균을 더 섞어서!”</p>
+    </section>
+
+    <section>
+      <h2>3) 보정 평점 (Weighted Rating) 기준 정렬</h2>
+      <canvas id="weightedChart"></canvas>
+    </section>
+
   </main>
 
   <footer>
@@ -46,57 +78,65 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const loading = document.getElementById('page-loading-message');
+      const M = 40;                    // 기준 리뷰 수
+      const GLOBAL_AVG = 3.93;         // 전체 평균 평점
 
       fetch('data/한동녹용연구소_이커머스데이터__2025-04-25.xlsx')
         .then(res => res.arrayBuffer())
         .then(data => {
-          const wb = XLSX.read(data, { type: 'array' });
-          const sheet = wb.Sheets['products'];
-          const rows = XLSX.utils.sheet_to_json(sheet);
+          const wb = XLSX.read(data, { type:'array' });
+          const rows = XLSX.utils.sheet_to_json(wb.Sheets['products']);
 
-          // ① 리뷰 수 기준 정렬
-          const sortedByReview = [...rows].sort((a, b) => b['리뷰수'] - a['리뷰수']);
-          const labelsReview = sortedByReview.map(r => r['제품명']);
-          const reviewCounts = sortedByReview.map(r => r['리뷰수']);
+          // 원본 배열 복제
+          const byReview = [...rows].sort((a,b)=>b['리뷰수']-a['리뷰수']);
+          const byRating = [...rows].sort((a,b)=>b['실제 평균 리뷰별점']-a['실제 평균 리뷰별점']);
 
-          new Chart(document.getElementById('reviewCountChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-              labels: labelsReview,
-              datasets: [{
-                label: '리뷰 수',
-                data: reviewCounts,
-                backgroundColor: 'rgba(255, 99, 132, 0.5)'
-              }]
+          // 보정 평점 추가 & 정렬
+          const withWeighted = rows.map(r => {
+            const n = r['리뷰수'] || 0;
+            const score = r['실제 평균 리뷰별점'] || 0;
+            const weighted = (n / (n + M)) * score + (M / (n + M)) * GLOBAL_AVG;
+            return { 제품명: r['제품명'], weighted };
+          }).sort((a,b)=>b.weighted - a.weighted);
+
+          // ① 리뷰 수 차트
+          new Chart(
+            document.getElementById('reviewCountChart').getContext('2d'),
+            { type:'bar',
+              data:{
+                labels: byReview.map(r=>r['제품명']),
+                datasets:[{ label:'리뷰 수', data:byReview.map(r=>r['리뷰수']), backgroundColor:'rgba(255,99,132,0.5)' }]
+              },
+              options:{ scales:{ y:{ beginAtZero:true } } }
             }
-          });
+          );
 
-          // ② 평균 평점 기준 정렬
-          const sortedByRating = [...rows].sort((a, b) => b['실제 평균 리뷰별점'] - a['실제 평균 리뷰별점']);
-          const labelsRating = sortedByRating.map(r => r['제품명']);
-          const avgRatings = sortedByRating.map(r => r['실제 평균 리뷰별점']);
-
-          new Chart(document.getElementById('ratingChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-              labels: labelsRating,
-              datasets: [{
-                label: '평균 평점',
-                data: avgRatings,
-                backgroundColor: 'rgba(54, 162, 235, 0.5)'
-              }]
-            },
-            options: {
-              scales: {
-                y: { beginAtZero: true, max: 5 }
-              }
+          // ② 평균 평점 차트
+          new Chart(
+            document.getElementById('ratingChart').getContext('2d'),
+            { type:'bar',
+              data:{
+                labels: byRating.map(r=>r['제품명']),
+                datasets:[{ label:'평균 평점', data:byRating.map(r=>r['실제 평균 리뷰별점']), backgroundColor:'rgba(54,162,235,0.5)' }]
+              },
+              options:{ scales:{ y:{ beginAtZero:true, max:5 } } }
             }
-          });
+          );
+
+          // ③ 보정 평점 차트
+          new Chart(
+            document.getElementById('weightedChart').getContext('2d'),
+            { type:'bar',
+              data:{
+                labels: withWeighted.map(r=>r['제품명']),
+                datasets:[{ label:'보정 평점', data:withWeighted.map(r=>r.weighted.toFixed(2)), backgroundColor:'rgba(75,192,192,0.5)' }]
+              },
+              options:{ scales:{ y:{ beginAtZero:true, max:5 } } }
+            }
+          );
         })
-        .catch(err => console.error(err))
-        .finally(() => {
-          loading.style.display = 'none';
-        });
+        .catch(console.error)
+        .finally(()=>{ loading.style.display='none'; });
     });
   </script>
 </body>
