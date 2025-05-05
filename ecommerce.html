@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>바이오닷 이커머스 분석 (가중평점 추가)</title>
+  <title>바이오닷 이커머스 분석</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -30,7 +30,6 @@
   </header>
 
   <main class="container">
-    <!-- 색상 범례: 맨 위 배치 -->
     <section style="margin-top:20px;">
       <h3>🎨 색상 범례</h3>
       <ul style="list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:20px; align-items:center;">
@@ -57,18 +56,16 @@
       <h2>2) 평균 평점 기준 정렬</h2>
       <canvas id="ratingChart"></canvas>
     </section>
-    
+
     <section style="margin-top:40px;">
       <h2>가중평점 계산 설명</h2>
-      <p>리뷰가 적으면 숫자 하나로는 믿기 어려우니까, 모두의 평균을 조금 섞어서 계산해요.</p>
       <ul>
         <li>📊 전체 평균 평점: <strong>3.93점</strong></li>
         <li>🧮 최소 리뷰 수 기준: <strong>40개</strong></li>
       </ul>
-      <p>✏️ <strong>공정한 평점 공식</strong>:</p>
       <pre style="background:#f0f0f0; padding:10px;">
 (⭐ 평균점수 × 리뷰수 + 🎯 초깃값 × 🧮 기준리뷰수) ÷ (리뷰수 + 🧮 기준리뷰수)
-= (리뷰수 / (리뷰수 + 🧮 40)) × ⭐ 평균점수 + (🧮 40 / (리뷰수 + 🧮 40)) × 🎯 3.93
+= (리뷰수 / (리뷰수 + 40)) × ⭐ 평균점수 + (40 / (리뷰수 + 40)) × 🎯 3.93
       </pre>
     </section>
 
@@ -77,14 +74,138 @@
       <canvas id="weightedChart"></canvas>
     </section>
 
-    <section style="margin-top:40px;">
-      <h2>리뷰가 없는 제품</h2>
-      <ul id="noReviewList"></ul>
+    <section style="margin-top: 40px;">
+      <h2>🔍 보정 평점 시각화 목적 및 인사이트 요약</h2>
+      <h3>🧠 시각화 목적</h3>
+      <p>리뷰 수에 따른 편향을 줄이고, 신뢰할 수 있는 평점을 기준으로 상품을 공정하게 정렬하기 위함입니다.</p>
+
+      <h3>📊 핵심 인사이트 요약</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>인사이트</th>
+            <th>설명</th>
+            <th>전략적 의미</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>A</strong></td>
+            <td>리뷰 수 많은 상품은 평점도 높음</td>
+            <td>무지개색 막대 대부분 상단 위치</td>
+            <td>리뷰 수 자체가 신뢰도와 긍정 평점에 영향</td>
+          </tr>
+          <tr>
+            <td><strong>B</strong></td>
+            <td>리뷰 적지만 평점 높은 상품 존재</td>
+            <td>회색 막대 중 중간 이상 항목 있음</td>
+            <td>충성도 높은 고객군 존재 가능, 타겟 마케팅 가치</td>
+          </tr>
+          <tr>
+            <td><strong>C</strong></td>
+            <td>리뷰 없는 상품은 하위권</td>
+            <td>검은 막대 대부분 하단 위치</td>
+            <td>리뷰 유도 없이는 신뢰 형성 어려움</td>
+          </tr>
+          <tr>
+            <td><strong>D</strong></td>
+            <td>리뷰 수 많은데 평점 낮은 상품</td>
+            <td>하위권 무지개 막대 존재</td>
+            <td>불만 피드백 집중 상품 → 개선 우선 대상</td>
+          </tr>
+          <tr>
+            <td><strong>E</strong></td>
+            <td>Top 제품군 존재</td>
+            <td>'200ml 30포' 등 상위 고정</td>
+            <td>핵심 상품으로 집중 마케팅 및 리뷰 콘텐츠화</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>✅ 액션 아이템 제안</h3>
+      <ul>
+        <li><strong>리뷰 없는 제품:</strong> 첫 리뷰 이벤트 또는 QR 기반 리뷰 유도</li>
+        <li><strong>리뷰 적지만 평점 높은 제품:</strong> "소수 정예 만족 고객" 메시지 활용</li>
+        <li><strong>리뷰 수 많고 평점 낮은 제품:</strong> 부정 리뷰 분석 후 개선 및 CS 대응 강화</li>
+        <li><strong>리뷰 많은 상위 제품:</strong> 리뷰 요약 콘텐츠 제작 및 FAQ, 후기 기반 추천 구성</li>
+        <li><strong>전체 리스팅 전략:</strong> 평점 기준이 아닌 보정 평점 기준으로 카테고리 정렬 적용</li>
+      </ul>
     </section>
-
-
+    <section style="margin-top:40px;">
+      <h2>제품 목록 분류</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 40px;">
+        <div>
+          <h3>A. 리뷰 없음 (총 6종)</h3>
+          <ul>
+            <li>뉴질랜드 녹용 가루 고함량 녹용 상대 산수유 혼합 분말 200g</li>
+            <li>한동 어린이 칼슘 영양제 키즈튼튼 녹용 칼슘스틱 선물세트 20g x 28포, 사슴키링</li>
+            <li>사슴인형 키링 어린이안전 KC인증</li>
+            <li>루돌프 티셔츠 유아 키즈 아동 기모 맨투맨 크리스마스 룩 코디</li>
+            <li>뉴질랜드 녹용 기름분골 뉴질랜드산 녹용 2냥 한재분량 75g</li>
+            <li>한방삼계탕 재료 한방백숙 수육 족발 러시아 알타이 녹용 60ml x 10포</li>
+          </ul>
+        </div>
+        <div>
+          <h3>B. 리뷰 적지만 평점 높은 상품</h3>
+          <ul>
+            <li>[리뉴얼] 러시아 알타이 녹용 즙 진액 엑기스 보약 선물세트 (2건)</li>
+            <li>뉴질랜드 녹용 가루 분골 고함량 녹용 당귀 산수유 혼합 분말 180g (3건)</li>
+            <li>진심 103환 명품 환 선물세트 (2건)</li>
+          </ul>
+        </div>
+        <div>
+          <h3>C. 리뷰 많고 평점 낮은 상품</h3>
+          <ul>
+            <li>러시아 녹용 가루 분골 고함량 당귀 산수유 혼합 분말 180g</li>
+          </ul>
+        </div>
+        <div>
+          <h3>D. 리뷰 많고 평점 높은 상품</h3>
+          <ul>
+            <li>한동녹용연구소 녹용 진액 엑기스 녹용즙 60ml 30포</li>
+            <li>한동 어린이녹용 보약 젤리 키즈튼튼 녹용 칼슘스틱 20g x 14포</li>
+            <li>왓츠인마이룸 신수지 뼈에좋은 관절 칼슘 구미 젤리 영양제 20g x 14포</li>
+            <li>한녹연 효력환 침향 침향단 침향환 효능 노인 어르신 기력회복 영양제</li>
+            <li>디어V슬림 식사대용 다이어트 쉐이크 40g x 5포(200g)</li>
+            <li>러시아 녹용 선물세트 부모님 어르신 보약 쇼핑백</li>
+            <li>차 선물세트 명품 고급 녹용 한방차 DV TEA</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <div style="flex: 1 1 500px;">
+      <h3>🎥 콘텐츠 시리즈 전략</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>콘텐츠 주제</th>
+            <th>Hook</th>
+            <th>CTA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>리뷰 0건 제품 먹어봤습니다</td><td>“리뷰 0개인데… 괜찮을까?”</td><td>“리뷰 첫 주인공 되어줄래요?”</td></tr>
+          <tr><td>별점 높은데 사람들이 모르는 제품</td><td>“이건 왜 안 뜨는 거지?”</td><td>“진짜 아는 사람만 먹는 거야”</td></tr>
+          <tr><td>별점 낮은 인기 제품의 진실</td><td>“리뷰 100개, 그런데 평점은 2.8?”</td><td>“당신이라면 별 몇 개 줄 건가요?”</td></tr>
+          <tr><td>베스트 제품 TOP3</td><td>“가장 많이 팔린 제품은?”</td><td>“1등 제품, 확인하러 가기 ⬇️”</td></tr>
+          <tr><td>녹용 제형 비교 콘텐츠</td><td>“환? 즙? 분말? 뭐가 달라?”</td><td>“당신 취향은 어떤 타입?”</td></tr>
+          <tr><td>리뷰 기반 Q&A 콘텐츠</td><td>“고객들이 자주 묻는 질문은?”</td><td>“댓글로 더 궁금한 점 남겨주세요!”</td></tr>
+          <tr><td>잘 팔리는데 리뷰 없는 제품</td><td>“왜 이렇게 조용하지?”</td><td>“직접 써보고 알려줘요 😊”</td></tr>
+        </tbody>
+      </table>
+  
+      <h4 style="margin-top:20px;">🔁 추천 순서 (릴스 캠페인 흐름)</h4>
+      <ol style="padding-left:20px; line-height:1.6;">
+        <li>리뷰 0건 제품 → 신뢰 형성 유도</li>
+        <li>숨은 고평점 제품 → 차별화된 신뢰 요소 강조</li>
+        <li>낮은 평점 제품 → 솔직 리뷰로 브랜드 신뢰 회복</li>
+        <li>TOP3 리뷰 제품 → 랭킹 콘텐츠로 구매욕 자극</li>
+        <li>형태별 비교 콘텐츠 → 정보 기반 선택 유도</li>
+      </ol>
+    </div>
+  </section>
   </main>
-
   <footer>
     <div class="container">
       <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
