@@ -1,4 +1,3 @@
-<!-- 개선된 text-analysis.html (워드 수 증가 + weightFactor 가시성 개선) -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -78,75 +77,43 @@
               </tbody>
             </table>
           </div>
+
+          <div class="card">
+            <h3>리뷰 인사이트 정리</h3>
+            <table>
+              <thead>
+                <tr><th>구분</th><th>인사이트</th><th>해석</th><th>마케팅 전략 방향</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td><strong>'걱정'</strong>이 부정 키워드 중 최상위</td><td>건강에 대한 불안 심리</td><td>👉 심리적 안심형 마케팅</td></tr>
+                <tr><td>2</td><td>'피로', '감기', '부담' 키워드 다수</td><td>컨디션 회복 니즈 집중</td><td>👉 상황별 추천 콘텐츠</td></tr>
+                <tr><td>3</td><td>긍정 키워드: '편하고', '도움', '좋다'</td><td>편의성과 실효성 체감</td><td>👉 효능 후기 콘텐츠</td></tr>
+                <tr><td>4</td><td>장기 복용 키워드 존재</td><td>반복 사용 만족도 존재</td><td>👉 꾸준함 강조 콘텐츠</td></tr>
+                <tr><td>5</td><td>감탄사 키워드 다수</td><td>정서적 거리감 낮음</td><td>👉 브랜드 친밀도 콘텐츠</td></tr>
+                <tr><td>6</td><td>부정 키워드가 감정어보다 증상 중심</td><td>실질 니즈 중심</td><td>👉 증상별 타겟 마케팅</td></tr>
+                <tr><td>7</td><td>키워드 기반 콘텐츠 구성 용이</td><td>#피로엔OO, #감기전엔OO 활용</td><td>👉 해시태그 릴스 콘텐츠</td></tr>
+                <tr><td>8</td><td>상황별 릴스 콘텐츠 적합</td><td>“피곤할 때 챙기면 좋은 것”</td><td>👉 릴스 타이틀 최적화</td></tr>
+                <tr><td>9</td><td>긍정 리뷰 65%</td><td>신뢰도 높은 리뷰 구조</td><td>👉 실사용 후기 콘텐츠</td></tr>
+                <tr><td>10</td><td>부정은 ‘상황’에 대한 우려</td><td>제품보다 환경적 원인</td><td>👉 상황 공감형 콘텐츠</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>릴스 콘텐츠 전략 요약</h3>
+            <ul>
+              <li>📌 <strong>상황별 증상 중심 타깃팅:</strong> 피로, 감기, 부담 등</li>
+              <li>📌 <strong>친근 + 신뢰 결합:</strong> 감탄사 캐주얼 톤 + 후기</li>
+              <li>📌 <strong>꾸준함/효능 강조:</strong> 장기 복용 후기 시리즈</li>
+              <li>📌 <strong>불안 해소 메시지:</strong> 심리적 안심형 카피</li>
+              <li>📌 <strong>참여형 구조 강화:</strong> 해시태그 챌린지/댓글 활용</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
   </div>
   <script src="js/charts.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const loader = document.getElementById('page-loading-message');
-      const delay = new Promise(res => setTimeout(res, 1000));
-      const load = loadExcelData();
-      Promise.all([delay, load]).finally(() => {
-        loader.style.display = 'none';
-      });
-    });
-
-    function loadExcelData() {
-      return new Promise((resolve) => {
-        const url = 'data/한동녹용연구소_이커머스데이터__2025-04-25.xlsx';
-        fetch(url)
-          .then(res => res.arrayBuffer())
-          .then(data => {
-            const wb = XLSX.read(data, { type: 'array' });
-            const pos = wb.Sheets['긍정단어_빈도'];
-            const neg = wb.Sheets['부정단어_빈도'];
-            const reviews = wb.Sheets['reviews'];
-
-            if (pos && neg) {
-              const posData = XLSX.utils.sheet_to_json(pos);
-              const negData = XLSX.utils.sheet_to_json(neg);
-
-              const positiveKeywords = posData.filter(r => r['등장횟수'] > 1).map(row => ({
-                word: row['긍정단어'],
-                count: row['등장횟수'] || 1
-              })).slice(0, 150);
-
-              const negativeKeywords = negData.filter(r => r['등장횟수'] > 1).map(row => ({
-                word: row['부정단어'],
-                count: row['등장횟수'] || 1
-              })).slice(0, 150);
-
-              const wordcloudData = [
-                ...positiveKeywords.map(w => ({ text: w.word, weight: w.count, sentiment: 'positive' })),
-                ...negativeKeywords.map(w => ({ text: w.word, weight: w.count, sentiment: 'negative' }))
-              ];
-
-              createKeywordCharts('positiveChart', 'negativeChart', {
-                positive: positiveKeywords,
-                negative: negativeKeywords
-              });
-              initWordCloud('wordcloudCanvas', wordcloudData);
-
-              document.getElementById('totalReviews').textContent = reviews ? XLSX.utils.sheet_to_json(reviews).length : '-';
-              document.getElementById('positiveRatio').textContent = '65%';
-              document.getElementById('negativeRatio').textContent = '15%';
-              document.getElementById('neutralRatio').textContent = '20%';
-              document.getElementById('mainKeywords').textContent = positiveKeywords.slice(0, 3).map(k => k.word).join(', ');
-              resolve();
-            } else {
-              useDummyData();
-              resolve();
-            }
-          })
-          .catch(error => {
-            console.error('엑셀 로드 오류:', error);
-            useDummyData();
-            resolve();
-          });
-      });
-    }
-  </script>
+  <script src="js/loader_text_v2.js"></script>
 </body>
 </html>
