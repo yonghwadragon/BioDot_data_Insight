@@ -29,9 +29,36 @@
   </header>
 
   <main class="container">
+    <!-- ### 세대 필터(기존 static) -->
     <section>
-      <h2>설문조사 분석</h2>
+      <h2>세대 필터</h2>
+      <div id="generation-filter" style="margin-bottom: 20px;">
+        <label><input type="checkbox" value="청소년 이하 (2007이하, 18세 이하)" checked> 청소년 이하</label>
+        <label><input type="checkbox" value="Z세대 (1997~2006, 19~28세)" checked> Z세대</label>
+        <label><input type="checkbox" value="밀레니얼세대 (1987~1996, 29~38세)" checked> 밀레니얼세대</label>
+        <label><input type="checkbox" value="중장년층 (1986이상, 39세 이상)" checked> 중장년층</label>
+      </div>
+    </section>
 
+        <!-- ### 성별 필터 -->
+    <section>
+      <h2>성별 필터</h2>
+      <div id="gender-filter" style="margin-bottom: 20px;">
+        <label><input type="checkbox" value="남" checked> 남</label>
+        <label><input type="checkbox" value="여" checked> 여</label>
+      </div>
+    </section>
+
+    <!-- ### 동적 필터 패널: JS 가 채웁니다! -->
+    <section>
+      <h2>다른 필터 선택</h2>
+      <div id="dynamic-filter-panel" style="display:flex;flex-wrap:wrap;gap:30px;margin-bottom:20px;"></div>
+      <div id="filter-summary" style="margin:10px 0;color:#666;"></div>
+    </section>
+
+    <!-- ### 차트 & 리스트 -->
+    <section>
+      <h2>설문조사 분석 <span id="response-count"></span></h2>
       <div class="chart-container"><canvas id="ageChart"></canvas></div>
       <div class="chart-container"><canvas id="genderChart"></canvas></div>
       <div class="chart-container"><canvas id="jobChart"></canvas></div>
