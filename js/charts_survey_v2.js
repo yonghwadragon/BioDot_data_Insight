@@ -44,7 +44,12 @@ function splitCounts(obj, sort = false) {
 
 // 랜덤 텍스트 리스트 렌더
 function renderTextList(id, items, n = 5) {
+  //  요소가 존재하지 않으면 함수 종료 (Null 방어)
   const ul = document.getElementById(id);
+  if (!ul) {
+    console.warn(`❗ renderTextList: id='${id}' 요소가 존재하지 않습니다.`);
+    return;
+  }
   ul.innerHTML = '';
   items
     .filter(Boolean)

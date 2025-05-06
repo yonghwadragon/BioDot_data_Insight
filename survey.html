@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>설문조사 분석 - 바이오닷 데이터 시각화</title>
+  <link rel="icon" href="image/favicon_antlers_pair.ico" type="image/x-icon" />
   <link rel="stylesheet" href="css/styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -27,8 +28,14 @@
       </nav>
     </div>
   </header>
-
   <main class="container">
+      <section style="margin: 30px 0;">
+    <h2>🧬 클러스터 탐색</h2>
+      <button onclick="applyClusterPreset('건강 관심형 MZ')">건강 관심형 MZ</button>
+      <button onclick="applyClusterPreset('활동적 건강 관심층')">활동적 건강 관심층</button>
+      <button onclick="applyClusterPreset('녹용 집중 관심층')">녹용 집중 관심층</button>
+    </section>
+    
     <!-- ### 세대 필터(기존 static) -->
     <section>
       <h2>세대 필터</h2>
@@ -94,7 +101,8 @@
       <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
     </div>
   </footer>
-
+  
+  <script src="js/cluster_presets.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/charts_survey_v2.js"></script>
 </body>

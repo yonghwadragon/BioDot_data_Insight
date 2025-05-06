@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>바이오닷 이커머스 분석</title>
+  <link rel="icon" href="image/favicon_antlers_pair.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -131,49 +132,47 @@
         <li><strong>리뷰 많은 상위 제품:</strong> 리뷰 요약 콘텐츠 제작 및 FAQ, 후기 기반 추천 구성</li>
         <li><strong>전체 리스팅 전략:</strong> 평점 기준이 아닌 보정 평점 기준으로 카테고리 정렬 적용</li>
       </ul>
-    </section>
-    <section style="margin-top:40px;">
-      <h2>제품 목록 분류</h2>
-      <div style="display: flex; flex-wrap: wrap; gap: 40px;">
-        <div>
-          <h3>A. 리뷰 없음 (총 6종)</h3>
-          <ul>
-            <li>뉴질랜드 녹용 가루 고함량 녹용 상대 산수유 혼합 분말 200g</li>
-            <li>한동 어린이 칼슘 영양제 키즈튼튼 녹용 칼슘스틱 선물세트 20g x 28포, 사슴키링</li>
-            <li>사슴인형 키링 어린이안전 KC인증</li>
-            <li>루돌프 티셔츠 유아 키즈 아동 기모 맨투맨 크리스마스 룩 코디</li>
-            <li>뉴질랜드 녹용 기름분골 뉴질랜드산 녹용 2냥 한재분량 75g</li>
-            <li>한방삼계탕 재료 한방백숙 수육 족발 러시아 알타이 녹용 60ml x 10포</li>
-          </ul>
+      <section style="margin-top:40px;">
+        <h2>제품 목록 분류</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 40px;">
+          
+          <div style="flex: 1 1 300px; min-width: 250px; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff; box-shadow: 2px 2px 8px rgba(0,0,0,0.05);">
+            <h3>A. 리뷰 없음 (총 6종)</h3>
+            <ul id="noReviewList" style="padding-left: 20px;"></ul>
+          </div>
+          
+          <div style="flex: 1 1 300px; min-width: 250px; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff; box-shadow: 2px 2px 8px rgba(0,0,0,0.05);">
+            <h3>B. 리뷰 적지만 평점 높은 상품</h3>
+            <ul style="padding-left: 20px;">
+              <li>[리뉴얼] 러시아 알타이 녹용 즙 진액 엑기스 보약 선물세트 (2건)</li>
+              <li>뉴질랜드 녹용 가루 분골 고함량 녹용 당귀 산수유 혼합 분말 180g (3건)</li>
+              <li>진심 103환 명품 한 선물세트 (2건)</li>
+            </ul>
+          </div>
+          
+          <div style="flex: 1 1 300px; min-width: 250px; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff; box-shadow: 2px 2px 8px rgba(0,0,0,0.05);">
+            <h3>C. 리뷰 많고 평점 낮은 상품</h3>
+            <ul style="padding-left: 20px;">
+              <li>러시아 녹용 가루 분골 고함량 당귀 산수유 혼합 분말 180g</li>
+            </ul>
+          </div>
+          
+          <div style="flex: 1 1 300px; min-width: 250px; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background: #fff; box-shadow: 2px 2px 8px rgba(0,0,0,0.05);">
+            <h3>D. 리뷰 많고 평점 높은 상품</h3>
+            <ul style="padding-left: 20px;">
+              <li>한동녹용연구소 녹용 진액 엑기스 녹용즙 60ml 30포</li>
+              <li>한동 어린이녹용 보약 젤리 키즈튼튼 녹용 칼슘스틱 20g x 14포</li>
+              <li>왓츠인마이룸 신수지 뼈에좋은 관절 칼슘 구미 젤리 영양제 20g x 14포</li>
+              <li>한녹연 효력환 침향 침향단 침향환 효능 노인 어르신 기력회복 영양제</li>
+              <li>디어V슬림 식사대용 다이어트 쉐이크 40g x 5포(200g)</li>
+              <li>러시아 녹용 선물세트 부모님 어르신 보약 쇼핑백</li>
+              <li>차 선물세트 명품 고급 녹용 한방차 DV TEA</li>
+            </ul>
+          </div>
+      
         </div>
-        <div>
-          <h3>B. 리뷰 적지만 평점 높은 상품</h3>
-          <ul>
-            <li>[리뉴얼] 러시아 알타이 녹용 즙 진액 엑기스 보약 선물세트 (2건)</li>
-            <li>뉴질랜드 녹용 가루 분골 고함량 녹용 당귀 산수유 혼합 분말 180g (3건)</li>
-            <li>진심 103환 명품 환 선물세트 (2건)</li>
-          </ul>
-        </div>
-        <div>
-          <h3>C. 리뷰 많고 평점 낮은 상품</h3>
-          <ul>
-            <li>러시아 녹용 가루 분골 고함량 당귀 산수유 혼합 분말 180g</li>
-          </ul>
-        </div>
-        <div>
-          <h3>D. 리뷰 많고 평점 높은 상품</h3>
-          <ul>
-            <li>한동녹용연구소 녹용 진액 엑기스 녹용즙 60ml 30포</li>
-            <li>한동 어린이녹용 보약 젤리 키즈튼튼 녹용 칼슘스틱 20g x 14포</li>
-            <li>왓츠인마이룸 신수지 뼈에좋은 관절 칼슘 구미 젤리 영양제 20g x 14포</li>
-            <li>한녹연 효력환 침향 침향단 침향환 효능 노인 어르신 기력회복 영양제</li>
-            <li>디어V슬림 식사대용 다이어트 쉐이크 40g x 5포(200g)</li>
-            <li>러시아 녹용 선물세트 부모님 어르신 보약 쇼핑백</li>
-            <li>차 선물세트 명품 고급 녹용 한방차 DV TEA</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+      </section>
+      
     <div style="flex: 1 1 500px;">
       <h3>🎥 콘텐츠 시리즈 전략</h3>
       <table>
@@ -206,6 +205,7 @@
     </div>
   </section>
   </main>
+  <div id="insightContainer" style="margin-top: 40px;"></div>
   <footer>
     <div class="container">
       <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
