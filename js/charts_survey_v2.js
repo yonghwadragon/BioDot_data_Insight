@@ -36,8 +36,10 @@ function countValues(rows, col, isMulti = false) {
 }
 
 // 객체→[keys, values]
-function splitCounts(obj) {
-  return [Object.keys(obj), Object.values(obj)];
+function splitCounts(obj, sort = false) {
+  const entries = Object.entries(obj);
+  if (sort) entries.sort((a, b) => b[1] - a[1]); // 값 기준 내림차순 정렬
+  return [entries.map(e => e[0]), entries.map(e => e[1])];
 }
 
 // 랜덤 텍스트 리스트 렌더
@@ -331,21 +333,31 @@ function renderAllCharts(rows) {
   chartInstances.push(
     createBarChart('ageChart', genLabels, genLabels.map(l => genCnt[l] || 0), '세대 분포')
   );
-
-  // 단일 응답 차트
+  
   chartInstances.push(renderPieWithPercent('genderChart', countValues(rows, '성별'), '성별 분포'));
-  chartInstances.push(createBarChart('jobChart', ...splitCounts(countValues(rows, '직업')), '직업 분포'));
+  chartInstances.push(createBarChart('jobChart', ...splitCounts(countValues(rows, '직업'), true), '직업 분포'));
   chartInstances.push(renderHorizontalBar('supplementChart', countValues(rows, '현재 섭취 중인 건강기능식품이 있다면 선택해 주세요. (복수 선택 가능)', true), '기능식품 섭취'));
   chartInstances.push(renderPieWithPercent('frequencyChart', countValues(rows, '평소 건강기능식품을 얼마나 섭취하시나요?'), '섭취 빈도'));
-  chartInstances.push(createBarChart('reasonChart', ...splitCounts(countValues(rows, '현재 섭취 중인 건강기능식품이 있다면 왜 섭취하시나요?')), '섭취 이유'));
-  chartInstances.push(createBarChart('criteriaChart', ...splitCounts(countValues(rows, '건강기능식품을 선택할 때 가장 중요하게 생각하는 기준은 무엇인가요?')), '선택 기준'));
-  chartInstances.push(createBarChart('purchaseChart', ...splitCounts(countValues(rows, '건강기능식품을 온라인에서 주로 어디서 구매하시나요?')), '구매처'));
-  chartInstances.push(createBarChart('recommendationChart', ...splitCounts(countValues(rows, '건강기능식품 추천을 주로 어디서 받나요?')), '추천 경로'));
-  chartInstances.push(createBarChart('reelsStyleChart', ...splitCounts(countValues(rows, '인스타그램 릴스/숏폼 콘텐츠에서 어떤 스타일을 선호하시나요?')), '릴스 스타일'));
-  chartInstances.push(createBarChart('deerKnowledgeChart', ...splitCounts(countValues(rows, '녹용에 대해 얼마나 알고 있나요?')), '녹용 인지도'));
-  chartInstances.push(createBarChart('deerExperienceChart', ...splitCounts(countValues(rows, '녹용 제품을 섭취해본 적이 있나요?')), '녹용 경험'));
+  chartInstances.push(renderHorizontalBar('reasonChart', countValues(rows, '현재 섭취 중인 건강기능식품이 있다면 왜 섭취하시나요?'), '섭취 이유'));
+  chartInstances.push(renderHorizontalBar('criteriaChart', countValues(rows, '건강기능식품을 선택할 때 가장 중요하게 생각하는 기준은 무엇인가요?'), '선택 기준'));
+  chartInstances.push(renderHorizontalBar('purchaseChart', countValues(rows, '건강기능식품을 온라인에서 주로 어디서 구매하시나요?'), '구매처'));
+  chartInstances.push(renderHorizontalBar('recommendationChart', countValues(rows, '건강기능식품 추천을 주로 어디서 받나요?'), '추천 경로'));
+  chartInstances.push(renderHorizontalBar('reelsStyleChart', countValues(rows, '인스타그램 릴스/숏폼 콘텐츠에서 어떤 스타일을 선호하시나요?'), '릴스 스타일'));
+  
+  chartInstances.push(createBarChart(
+    'deerKnowledgeChart',
+    ['완전 모름', '모름', '보통', '알고 있음', '매우 알고 있음'],  
+    splitCounts(countValues(rows, '녹용에 대해 얼마나 알고 있나요?'))[1],
+    '녹용 인지도'
+  ));
+  chartInstances.push(createBarChart(
+    'deerExperienceChart',
+    ['과거에는 먹었지만, 현재는 먹지 않는다', '먹어본 적 없다', '지금도 먹고 있다'],
+    splitCounts(countValues(rows, '녹용 제품을 섭취해본 적이 있나요?'))[1],
+    '녹용 경험'
+  ));
 
-  // 복수 응답 차트
+  // 복수 응답 차트 (전부 정렬 + 수평 그래프)
   [
     ['deerImageChart','녹용에 대해 떠오르는 이미지는 무엇인가요 (복수 선택 가능)'],
     ['deerBarrierChart','녹용 제품 구매를 망설이게 하는 이유가 있다면 무엇인가요? (복수 선택 가능)'],
@@ -356,8 +368,9 @@ function renderAllCharts(rows) {
   ].forEach(([id, key]) => {
     const multi = key.includes('(복수');
     const ct = countValues(rows, key, multi);
-    chartInstances.push(createBarChart(id, ...splitCounts(ct), key));
+    chartInstances.push(renderHorizontalBar(id, ct, key));
   });
+
 
   // 주관식 리스트
   renderTextList('deerStopReasons', rows.map(r => r["(선택) '과거에는 먹었지만, 현재는 먹지 않는다'를 택하신 분들은, 왜 현재는 드시지 않나요?"]).filter(Boolean));
