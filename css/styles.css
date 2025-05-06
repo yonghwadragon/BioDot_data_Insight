@@ -1,4 +1,4 @@
-/* ✅ 개선된 styles.css (링크 초기화 + 버튼 통일 + 필터 카드화 + 반응형) */
+/* ✅ 개선된 styles.css (전체 구조, 클러스터 카드 포함) */
 
 /* 웹폰트 등록 */
 @font-face {
@@ -98,11 +98,12 @@ button {
   background-color: #3498db;
   color: white;
   border: none;
-  padding: 6px 12px;
-  margin-right: 5px;
-  border-radius: 4px;
+  padding: 8px 16px;
+  margin-right: 6px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   transition: background-color 0.2s ease;
 }
 
@@ -223,4 +224,64 @@ tr:nth-child(even) {
   #dynamic-filter-panel {
     flex-direction: column;
   }
+}
+
+/* 클러스터 요약 카드 개선 */
+.cluster-summary-card {
+  background: #ffffff;
+  border-left: 6px solid #4f46e5;
+  padding: 24px 28px;
+  margin-top: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  overflow-x: auto;
+}
+
+.cluster-summary-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.cluster-summary-card h3 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+}
+
+.cluster-summary-card table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  table-layout: fixed;
+}
+
+.cluster-summary-card th {
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  padding: 10px 12px;
+  width: 170px;
+  white-space: nowrap;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.cluster-summary-card td {
+  color: #1f2937;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  word-break: break-word;
+}
+
+.cluster-summary-card tr:last-child td,
+.cluster-summary-card tr:last-child th {
+  border-bottom: none;
+}
+
+.cluster-summary-card ul {
+  padding-left: 24px;
+  margin-top: 8px;
 }

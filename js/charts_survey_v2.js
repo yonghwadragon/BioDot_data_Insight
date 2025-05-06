@@ -231,6 +231,71 @@ function initUI() {
   summary.parentNode.insertBefore(btnReset, summary.nextSibling);
 }
 
+// --- 1) 유틸 함수 끝난 직후
+// --- 2a) 필터 기반 동적 요약 카드 렌더링 함수 추가
+function renderFilterSummary(rows) {
+  const container = document.getElementById('cluster-summary');
+  if (!container) return;
+  const total = rows.length;
+  if (total === 0) {
+    container.innerHTML = `<p>선택 조건에 맞는 응답이 없습니다.</p>`;
+    return;
+  }
+  // 주요 5개 카테고리 카운트
+  const supCnt    = countValues(rows, '현재 섭취 중인 건강기능식품이 있다면 선택해 주세요. (복수 선택 가능)', true);
+  const freqCnt   = countValues(rows, '평소 건강기능식품을 얼마나 섭취하시나요?', false);
+  const reasonCnt = countValues(rows, '현재 섭취 중인 건강기능식품이 있다면 왜 섭취하시나요?', true);
+  const shopCnt   = countValues(rows, '건강기능식품을 온라인에서 주로 어디서 구매하시나요?', false);
+  const actionCnt = countValues(rows, '인스타그램에서 건강 관련 콘텐츠를 볼 때 주로 어떤 행동을 하나요? (복수 선택 가능)', true);
+  // 추가 카테고리
+  const criteriaCnt = countValues(rows, '건강기능식품을 선택할 때 가장 중요하게 생각하는 기준은 무엇인가요?', false);
+  const deerPer     = countValues(rows, '녹용에 대해 얼마나 알고 있나요?', false);
+  
+  // 🧠 녹용 인식: 숫자키 → 텍스트 라벨 맵핑
+  const deerKnowLabelMap = {
+   '1': '완전 모름',
+   '2': '모름',
+   '3': '보통',
+   '4': '알고 있음',
+   '5': '매우 알고 있음'
+  };
+  const mappedDeerPer = {};
+  Object.entries(deerPer).forEach(([k, v]) => {
+  const label = deerKnowLabelMap[k.trim()] || k;
+  mappedDeerPer[label] = v;
+  });
+  const barrier     = countValues(rows, '녹용 제품 구매를 망설이게 하는 이유가 있다면 무엇인가요? (복수 선택 가능)', true);
+  const appeal      = countValues(rows, '만약 MZ세대 맞춤형 녹용 제품이 있다면 어떤 요소가 가장 매력적인가요? (복수 선택 가능)', true);
+  const contentPref = countValues(rows, '인스타그램 릴스/숏폼 콘텐츠에서 어떤 스타일을 선호하시나요?', false);
+  const keywords    = countValues(rows, '건강기능식품 관련 릴스를 볼 때 기억에 남았던 키워드는 무엇인가요? (복수 선택 가능)', true);
+
+  function topN(cntObj, n=3) {
+    return Object.entries(cntObj)
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,n)
+      .map(([k,v])=>`${k}(${v})`);
+  }
+  container.innerHTML = `
+    <div class="cluster-summary-card">
+      <h3>필터 기반 요약 (${total}명)</h3>
+      <table>
+        <tbody>
+          <tr><th>🎯 상위 섭취 품목</th><td>${topN(supCnt,3).join(' · ')}</td></tr>
+          <tr><th>⏱️ 섭취 빈도</th><td>${topN(freqCnt,3).join(' · ')}</td></tr>
+          <tr><th>❤️ 섭취 이유</th><td>${topN(reasonCnt,3).join(' · ')}</td></tr>
+          <tr><th>🛍️ 주요 구매처</th><td>${topN(shopCnt,3).join(' · ')}</td></tr>
+          <tr><th>📱 SNS 반응</th><td>${topN(actionCnt,3).join(' · ')}</td></tr>
+          <tr><th>🛒 선택 기준</th><td>${topN(criteriaCnt,3).join(' · ')}</td></tr>
+          <tr><th>🧠 녹용 인식</th><td>${topN(mappedDeerPer,3).join(' · ')}</td></tr>
+          <tr><th>😥 구매 장벽</th><td>${topN(barrier,3).join(' · ')}</td></tr>
+          <tr><th>⭐ 매력 요소</th><td>${topN(appeal,3).join(' · ')}</td></tr>
+          <tr><th>🎬 선호 콘텐츠</th><td>${topN(contentPref,3).join(' · ')}</td></tr>
+          <tr><th>🔑 핵심 키워드</th><td>${topN(keywords,3).join(' · ')}</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+}
+
 // --- 5) 필터 적용 --------------------------------------------------------------
 
 function applyFilters() {
@@ -277,9 +342,11 @@ function applyFilters() {
     }
     return true;
   });
-
+  
   updateSummary(filtered);
   renderAllCharts(filtered);
+  // ▶ 필터 변경 시 동적 요약 카드 렌더
+  renderFilterSummary(filtered); 
 }
 
 // --- 6) 요약 업데이트 ----------------------------------------------------------
@@ -395,11 +462,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     generateDynamicFilterUI();
     initUI();
 
-    // 세대·성별·고급 필터 모두 변경 시
-    document.querySelectorAll(
-      '#generation-filter input, #gender-filter input, #dynamic-filter-panel input'
+     // 모든 필터 변경 시 applyFilters 호출
+     document.querySelectorAll(
+       '#generation-filter input, #gender-filter input, #dynamic-filter-panel input'
     ).forEach(cb => cb.addEventListener('change', applyFilters));
-
+    
+    // 최초 렌더링
     applyFilters();
   } catch (e) {
     console.error('설문 데이터 처리 오류:', e);
