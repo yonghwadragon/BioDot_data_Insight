@@ -23,6 +23,35 @@
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const utmParams = ['utm_source', 'utm_medium', 'utm_campaign'];
+    
+      let hasUTM = false;
+      utmParams.forEach(param => {
+        const value = params.get(param);
+        if (value) {
+          localStorage.setItem(param, value);
+          hasUTM = true;
+        }
+      });
+    
+      window.addEventListener('DOMContentLoaded', () => {
+        const links = document.querySelectorAll('a[href$=".html"]');
+        links.forEach(link => {
+          link.addEventListener('click', (e) => {
+            const href = new URL(link.href);
+            utmParams.forEach(param => {
+              const stored = localStorage.getItem(param);
+              if (stored) href.searchParams.set(param, stored);
+            });
+            link.href = href.toString();
+          });
+        });
+      });
+    })();
+    </script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
