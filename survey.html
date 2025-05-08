@@ -35,8 +35,9 @@
           hasUTM = true;
         }
       });
-      gtag('event', 'page_view'); 
+ 
       window.addEventListener('DOMContentLoaded', () => {
+        gtag('event', 'page_view');
         const links = document.querySelectorAll('a[href$=".html"]');
         links.forEach(link => {
           link.addEventListener('click', (e) => {
