@@ -16,7 +16,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-G5106LZ07M');
+    gtag('config', 'G-G5106LZ07M', { send_page_view: false });
   </script>
   <link rel="icon" href="image/favicon_antlers_pair.ico" type="image/x-icon" />
   <link rel="stylesheet" href="css/styles.css" />
@@ -35,7 +35,7 @@
           hasUTM = true;
         }
       });
-    
+      gtag('event', 'page_view'); 
       window.addEventListener('DOMContentLoaded', () => {
         const links = document.querySelectorAll('a[href$=".html"]');
         links.forEach(link => {
