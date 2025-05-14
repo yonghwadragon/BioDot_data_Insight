@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>바이오닷 - 텍스트 분석</title>
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-M662SSHS');</script>
+  <!-- End Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5106LZ07M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-G5106LZ07M', { send_page_view: false }, 'page_view', { debug_mode: true });
+  </script>
+  <link rel="icon" href="image/favicon_antlers_pair.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.2.2/wordcloud2.min.js"></script>
+  <script src="js/wordcloud.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const utmParams = ['utm_source', 'utm_medium', 'utm_campaign'];
+    
+      let hasUTM = false;
+      utmParams.forEach(param => {
+        const value = params.get(param);
+        if (value) {
+          localStorage.setItem(param, value);
+          hasUTM = true;
+        }
+      });
+      
+      window.addEventListener('DOMContentLoaded', () => {
+        gtag('event',  'page_view', { debug_mode: true });
+        const links = document.querySelectorAll('a[href$=".html"]');
+        links.forEach(link => {
+          link.addEventListener('click', (e) => {
+            const href = new URL(link.href);
+            utmParams.forEach(param => {
+              const stored = localStorage.getItem(param);
+              if (stored) href.searchParams.set(param, stored);
+            });
+            link.href = href.toString();
+          });
+        });
+      });
+    })();
+    </script>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M662SSHS"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div id="page-loading-message" class="loading-message">
+    <h2>바이오닷 대시보드로 이동 중...</h2>
+    <p>잠시만 기다려주세요.</p>
+  </div>
+  <header>
+    <div class="container">
+      <h1>바이오닷 텍스트 분석</h1>
+      <nav>
+        <ul style="list-style: none; display: flex; gap: 20px;">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="survey.html">설문조사 분석</a></li>
+          <li><a href="ecommerce.html">이커머스 분석</a></li>
+          <li><a href="text-analysis.html" style="color: #3498db; font-weight: bold;">텍스트 분석</a></li>
+          <li><a href="insight_to_action.html">인사이트 실행 보고</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container">
+    <section>
+      <h2>텍스트 분석 결과</h2>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3>워드클라우드</h3>
+            <div class="wordcloud-container">
+              <canvas id="wordcloudCanvas" width="800" height="400"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3>긍정 키워드 분석</h3>
+            <div class="chart-container">
+              <canvas id="positiveChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h3>부정 키워드 분석</h3>
+            <div class="chart-container">
+              <canvas id="negativeChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <h3>텍스트 분석 요약</h3>
+            <table id="textSummaryTable">
+              <thead>
+                <tr><th>항목</th><th>값</th><th>비고</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>총 리뷰 수</td><td id="totalReviews">-</td><td></td></tr>
+                <tr><td>긍정 리뷰 비율</td><td id="positiveRatio">-</td><td></td></tr>
+                <tr><td>부정 리뷰 비율</td><td id="negativeRatio">-</td><td></td></tr>
+                <tr><td>중립 리뷰 비율</td><td id="neutralRatio">-</td><td></td></tr>
+                <tr><td>주요 키워드</td><td id="mainKeywords">-</td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>리뷰 인사이트 정리</h3>
+            <table>
+              <thead>
+                <tr><th>구분</th><th>인사이트</th><th>해석</th><th>마케팅 전략 방향</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td><strong>'걱정'</strong>이 부정 키워드 중 최상위</td><td>건강에 대한 불안 심리</td><td>👉 심리적 안심형 마케팅</td></tr>
+                <tr><td>2</td><td>'피로', '감기', '부담' 키워드 다수</td><td>컨디션 회복 니즈 집중</td><td>👉 상황별 추천 콘텐츠</td></tr>
+                <tr><td>3</td><td>긍정 키워드: '편하고', '도움', '좋다'</td><td>편의성과 실효성 체감</td><td>👉 효능 후기 콘텐츠</td></tr>
+                <tr><td>4</td><td>장기 복용 키워드 존재</td><td>반복 사용 만족도 존재</td><td>👉 꾸준함 강조 콘텐츠</td></tr>
+                <tr><td>5</td><td>감탄사 키워드 다수</td><td>정서적 거리감 낮음</td><td>👉 브랜드 친밀도 콘텐츠</td></tr>
+                <tr><td>6</td><td>부정 키워드가 감정어보다 증상 중심</td><td>실질 니즈 중심</td><td>👉 증상별 타겟 마케팅</td></tr>
+                <tr><td>7</td><td>키워드 기반 콘텐츠 구성 용이</td><td>#피로엔OO, #감기전엔OO 활용</td><td>👉 해시태그 릴스 콘텐츠</td></tr>
+                <tr><td>8</td><td>상황별 릴스 콘텐츠 적합</td><td>“피곤할 때 챙기면 좋은 것”</td><td>👉 릴스 타이틀 최적화</td></tr>
+                <tr><td>9</td><td>긍정 리뷰 65%</td><td>신뢰도 높은 리뷰 구조</td><td>👉 실사용 후기 콘텐츠</td></tr>
+                <tr><td>10</td><td>부정은 ‘상황’에 대한 우려</td><td>제품보다 환경적 원인</td><td>👉 상황 공감형 콘텐츠</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h3>릴스 콘텐츠 전략 요약</h3>
+            <ul>
+              <li>📌 <strong>상황별 증상 중심 타깃팅:</strong> 피로, 감기, 부담 등</li>
+              <li>📌 <strong>친근 + 신뢰 결합:</strong> 감탄사 캐주얼 톤 + 후기</li>
+              <li>📌 <strong>꾸준함/효능 강조:</strong> 장기 복용 후기 시리즈</li>
+              <li>📌 <strong>불안 해소 메시지:</strong> 심리적 안심형 카피</li>
+              <li>📌 <strong>참여형 구조 강화:</strong> 해시태그 챌린지/댓글 활용</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+      <footer>
+        <div class="container">
+            <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
+        </div>
+    </footer>
+  <script src="js/charts.js"></script>
+  <script src="js/loader_text_v2.js"></script>
+</body>
+</html>

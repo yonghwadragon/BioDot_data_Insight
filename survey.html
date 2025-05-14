@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>설문조사 분석 - 바이오닷 데이터 시각화</title>
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-M662SSHS');</script>
+  <!-- End Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5106LZ07M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-G5106LZ07M', { send_page_view: false }, 'page_view', { debug_mode: true });
+  </script>
+  <link rel="icon" href="image/favicon_antlers_pair.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const utmParams = ['utm_source', 'utm_medium', 'utm_campaign'];
+    
+      let hasUTM = false;
+      utmParams.forEach(param => {
+        const value = params.get(param);
+        if (value) {
+          localStorage.setItem(param, value);
+          hasUTM = true;
+        }
+      });
+ 
+      window.addEventListener('DOMContentLoaded', () => {
+        gtag('event', 'page_view', { debug_mode: true });
+        const links = document.querySelectorAll('a[href$=".html"]');
+        links.forEach(link => {
+          link.addEventListener('click', (e) => {
+            const href = new URL(link.href);
+            utmParams.forEach(param => {
+              const stored = localStorage.getItem(param);
+              if (stored) href.searchParams.set(param, stored);
+            });
+            link.href = href.toString();
+          });
+        });
+      });
+    })();
+    </script>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M662SSHS"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <div id="page-loading-message" class="loading-message">
+    <h2>바이오닷 대시보드로 이동 중...</h2>
+    <p>잠시만 기다려주세요.</p>
+  </div>
+
+  <header>
+    <div class="container">
+      <h1>바이오닷 데이터 시각화 대시보드</h1>
+      <nav>
+        <ul style="list-style: none; display: flex; gap: 20px;">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="survey.html" style="font-weight: bold; color: #3498db;">설문조사 분석</a></li>
+          <li><a href="ecommerce.html">이커머스 분석</a></li>
+          <li><a href="text-analysis.html">텍스트 분석</a></li>
+          <li><a href="insight_to_action.html">인사이트 실행 보고</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+      <section style="margin: 30px 0;">
+    <h2>🧬 클러스터 탐색</h2>
+      <button onclick="applyClusterPreset('건강 관심형 MZ')">건강 관심형 MZ</button>
+      <button onclick="applyClusterPreset('활동적 건강 관심층')">활동적 건강 관심층</button>
+      <button onclick="applyClusterPreset('녹용 집중 관심층')">녹용 집중 관심층</button>
+      <div id="cluster-summary" class="cluster-summary-card" style="margin-top:20px;">
+    </section>
+    
+    <!-- ### 세대 필터(기존 static) -->
+    <section>
+      <h2>세대 필터</h2>
+      <div id="generation-filter" style="margin-bottom: 20px;">
+        <label><input type="checkbox" value="청소년 이하 (2007이하, 18세 이하)" checked> 청소년 이하</label>
+        <label><input type="checkbox" value="Z세대 (1997~2006, 19~28세)" checked> Z세대</label>
+        <label><input type="checkbox" value="밀레니얼세대 (1987~1996, 29~38세)" checked> 밀레니얼세대</label>
+        <label><input type="checkbox" value="중장년층 (1986이상, 39세 이상)" checked> 중장년층</label>
+      </div>
+    </section>
+
+        <!-- ### 성별 필터 -->
+    <section>
+      <h2>성별 필터</h2>
+      <div id="gender-filter" style="margin-bottom: 20px;">
+        <label><input type="checkbox" value="남" checked> 남</label>
+        <label><input type="checkbox" value="여" checked> 여</label>
+      </div>
+    </section>
+
+    <!-- ### 동적 필터 패널: JS 가 채웁니다! -->
+    <section>
+      <h2>다른 필터 선택</h2>
+      <div id="dynamic-filter-panel" style="display:flex;flex-wrap:wrap;gap:30px;margin-bottom:20px;"></div>
+      <div id="filter-summary" style="margin:10px 0;color:#666;"></div>
+    </section>
+
+    <!-- ### 차트 & 리스트 -->
+    <section>
+      <h2>설문조사 분석 <span id="response-count"></span></h2>
+      <div class="chart-container"><canvas id="ageChart"></canvas></div>
+      <div class="chart-container"><canvas id="genderChart"></canvas></div>
+      <div class="chart-container"><canvas id="jobChart"></canvas></div>
+      <div class="chart-container"><canvas id="supplementChart"></canvas></div>
+      <div class="chart-container"><canvas id="frequencyChart"></canvas></div>
+      <div class="chart-container"><canvas id="reasonChart"></canvas></div>
+      <div class="chart-container"><canvas id="criteriaChart"></canvas></div>
+      <div class="chart-container"><canvas id="purchaseChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerKnowledgeChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerExperienceChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerImageChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerBarrierChart"></canvas></div>
+      <div class="chart-container"><canvas id="deerAppealChart"></canvas></div>
+      <div class="chart-container"><canvas id="recommendationChart"></canvas></div>
+      <div class="chart-container"><canvas id="reelsStyleChart"></canvas></div>
+      <div class="chart-container"><canvas id="instagramActionChart"></canvas></div>
+      <div class="chart-container"><canvas id="reelsInterestChart"></canvas></div>
+      <div class="chart-container"><canvas id="keywordChart"></canvas></div>
+
+      <div class="card">
+        <h3>과거 섭취 중단 사유 (랜덤)</h3>
+        <ul id="deerStopReasons"></ul>
+      </div>
+      <div class="card">
+        <h3>친숙화 전략 제안 (랜덤)</h3>
+        <ul id="friendlyStrategies"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
+    </div>
+  </footer>
+  
+  <script src="js/cluster_presets.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/charts_survey_v2.js"></script>
+</body>
+</html>

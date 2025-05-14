@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>인사이트 실행 보고 - 바이오닷</title>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-M662SSHS');</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G5106LZ07M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-G5106LZ07M', { send_page_view: false }, 'page_view', { debug_mode: true });
+  </script>
+  <link rel="icon" href="image/favicon_antlers_pair.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+    a { color: #3498db; text-decoration: none; }
+    nav ul li a:hover { text-decoration: none; }
+    a:visited { color: #3498db; }
+    
+    /* 신규 스타일 추가 */
+    .coming-soon {
+      color: #7f8c8d;
+      cursor: default;
+    }
+    .pending-data-notice {
+      text-align: center;
+      padding: 30px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 1px dashed #ddd;
+    }
+  </style>
+</head>
+<body>
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M662SSHS"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <div id="page-loading-message" class="loading-message">
+    <h2>바이오닷 대시보드로 이동 중...</h2>
+    <p>잠시만 기다려주세요.</p>
+  </div>
+
+  <header>
+    <div class="container">
+      <h1>바이오닷 인사이트 실행 보고</h1>
+      <nav>
+        <ul style="list-style:none; display:flex; gap:20px;">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="survey.html">설문조사 분석</a></li>
+          <li><a href="ecommerce.html">이커머스 분석</a></li>
+          <li><a href="text-analysis.html">텍스트 분석</a></li>
+          <li><a href="insight_to_action.html" style="color:#3498db; font-weight:bold;">인사이트 실행 보고</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+<section>
+  <h2>문제 정의</h2>
+  <p>
+    한동녹용연구소 인스타그램이 MZ세대를 타겟으로 릴스 콘텐츠를 통해
+    <strong>8주 내 기존 게시물 대비 반응률을 3배</strong> 상승시킬 수 있을까?
+  </p>
+
+  <h3>왜 이 문제를 정의했는가?</h3>
+
+  <p>✅ <strong>20~40대의 건강기능식품 소비 비중이 꾸준히 증가</strong><br>
+    기존 50~60대 중심에서, 2024년 기준 약 35%가 MZ세대로 전환됨</p>
+  <figure style="text-align: center; margin-bottom: 40px;">
+    <img src="image/1 (4).png" alt="연령별 소비 비중 증가" style="width: 90vw; max-width: 720px; border-radius: 10px; display: block; margin: 0 auto;">
+  <figcaption style="font-size: 15px; margin-top: 10px;">
+      [출처: 2024 건강기능식품 시장 보고서 – 연령별 소비 금액 비중]
+    </figcaption>
+  </figure>
+
+  <p>✅ <strong>구미/젤리형 제형 소비가 4년간 2배 이상 증가</strong><br>
+    이는 MZ세대의 ‘간편하고 맛있는 건강기능식품’ 선호를 반영함</p>
+  <figure style="text-align: center; margin-bottom: 40px;">
+    <img src="image/1 (7).png" alt="제형별 구매 경험률 증가" style="width: 90vw; max-width: 720px; border-radius: 10px; display: block; margin: 0 auto;">
+  <figcaption style="font-size: 15px; margin-top: 10px;">
+      [출처: 2024 건강기능식품 시장 보고서 – 제형별 구매 경험률 변화]
+    </figcaption>
+  </figure>
+
+  <p>✅ <strong>온라인 쇼핑이 주요 구매 채널로 부상</strong><br>
+    건강기능식품 온라인 구매율이 69.8%로, SNS 콘텐츠 마케팅과 자연스럽게 연결됨</p>
+  <figure style="text-align: center; margin-bottom: 40px;">
+    <img src="image/1 (5).png" alt="온라인 쇼핑 비중" style="width: 90vw; max-width: 720px; border-radius: 10px; display: block; margin: 0 auto;">
+  <figcaption style="font-size: 15px; margin-top: 10px;">
+      [출처: 2024 건강기능식품 시장 보고서 – 소비자 구매 채널 비중]
+    </figcaption>
+  </figure>
+
+  <p>✅ <strong>기존 녹용 콘텐츠는 50~60대에 집중되어 있음</strong><br>
+    경쟁사 콘텐츠 공백 속에서 MZ세대를 위한 콘텐츠 전략은 한동녹용연구소에 기회가 됨</p>
+</section>
+
+<section>
+  <h2>고객 조사 기반 문제 인식</h2>
+  <p>
+    설문 225명, 인터뷰 10명, 오프라인 인터뷰 8명, 리뷰 데이터 1730건을 분석한 결과,<br>
+    MZ세대는 <strong>'간편함'</strong>과 <strong>'맛'</strong>을 건강기능식품 선택의 핵심 요소로 꼽았으며,<br>
+    <strong>'녹용은 고령층 전용'</strong>이라는 인식과 함께, <strong>'젤리형 제품'</strong>에 대한 높은 선호를 보였음.
+  </p>
+
+  <figure style="text-align:center; margin:40px 0;">
+    <img src="image/녹용에 대해 떠오르는 이미지.png"
+         alt="녹용에 대해 떠오르는 이미지"
+         style="width:90vw; max-width:1160px; border-radius:8px; display:block; margin:0 auto;">
+    <figcaption style="font-size:14px; margin-top:8px;">
+      “녹용에 대해 떠오르는 이미지는 무엇인가요?” (복수 선택)
+    </figcaption>
+  </figure>
+
+  <p style="margin-top: 40px;">
+    특히 ‘스틱형/젤리형/양갱’ 제형을 <strong>MZ세대 맞춤 요소로 선택한 응답자가 다수</strong>였으며,<br>
+    이에 따라 <strong>체험 릴스(시각 중심) + ASMR 콘텐츠(청각 중심)</strong> 전략이 결정됨.
+  </p>
+
+  <figure style="text-align:center; margin:40px 0;">
+    <img src="image/MZ 맞춤형 매력적 녹용 제품.png"
+         alt="MZ 맞춤형 매력적 녹용 제품 요소"
+         style="width:90vw; max-width:1160px; border-radius:8px; display:block; margin:0 auto;">
+    <figcaption style="font-size:14px; margin-top:8px;">
+      “만약 MZ세대 맞춤형 녹용 제품이 있다면 가장 매력적인 요소는?” (복수 선택)
+    </figcaption>
+  </figure>
+</section>
+
+    <section>
+      <h2>What we did → 콘텐츠 실행</h2>
+
+      <h3>📌 콘텐츠 ①: 체험 릴스 (여성, 반말 ver)</h3>
+      <video controls style="width:100%;max-width:420px;aspect-ratio:9/16;border-radius:12px;">
+        <source src="video/(1-1)바이오닷_녹용체험_반말ver.mp4" type="video/mp4">
+      </video>
+      <p><a href="https://www.instagram.com/reel/DJWWQNuvikK/?utm_source=ig_web_copy_link">🔗 릴스 링크 보기</a></p>
+      <div class="chart-container"><canvas id="engageFemale"></canvas></div>
+
+      <h3>📌 콘텐츠 ②: 체험 릴스 (남성, 높임말 ver)</h3>
+      <video controls style="width:100%;max-width:420px;aspect-ratio:9/16;border-radius:12px;">
+        <source src="video/(1-2)바이오닷_녹용체험-존댓말ver.mp4" type="video/mp4">
+      </video>
+      <p><a href="https://www.instagram.com/reel/DJjNMpMPCo3/?utm_source=ig_web_copy_link">🔗 릴스 링크 보기</a></p>
+      <div class="chart-container"><canvas id="engageMale"></canvas></div>
+    </section>
+
+    <section>
+      <h2>성과 요약</h2>
+      <ul>
+        <li>합산 참여율: <strong><span id="totalEngageRate">-</span>%</strong></li>
+        <li>합산 반응률: <strong><span id="totalReactRate">-</span>%</strong></li>
+        <li>
+          합산 좋아요/댓글/저장/공유:
+          <strong><span id="totalLikes">-</span></strong> /
+          <strong><span id="totalComments">-</span></strong> /
+          <strong><span id="totalSaves">-</span></strong> /
+          <strong><span id="totalShares">-</span></strong>
+        </li>
+      </ul>
+      <div class="chart-container">
+        <canvas id="engagementChart"></canvas>
+      </div>
+    </section>
+
+    <section>
+
+      <p>👀 "먼저 듣고 나니 덜 부담스러웠어요"<br>📌 시각보다 청각이 먼저인 전략적 유도</p>
+      
+      <!-- 새로 추가된 ASMR 콘텐츠 섹션 -->
+      <h3>📌 콘텐츠 ③: 젤리 정통 ASMR</h3>
+      <video controls style="width:100%;max-width:420px;aspect-ratio:9/16;border-radius:12px;">
+        <source src="video/(2-1)젤리 정통 ASMR.mp4" type="video/mp4">
+      </video>
+      <p><a href="#" class="coming-soon">🔗 릴스 링크 (업로드 예정)</a></p>
+      <div class="chart-container">
+        <div class="pending-data-notice">
+          <p style="font-size:18px;color:#555;margin:0;">📊 성과 지표 집계 중</p>
+          <p style="font-size:14px;color:#777;margin-top:10px;">릴스 게시 후 7일간의 데이터를 수집하여 추후 업데이트 예정입니다.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 바이오닷 데이터 시각화 프로젝트</p>
+        </div>
+    </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('page-loading-message').style.display = 'none';
+    });
+  </script>
+
+  <!-- 필수 스크립트 로드 순서 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="js/charts_engagement.js"></script>
+</body>
+</html>
