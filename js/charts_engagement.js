@@ -63,15 +63,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     reached:  (female['도달된 계정']||0) + (male['도달된 계정']||0),
     engaged:  (female['참여한 계정']||0) + (male['참여한 계정']||0)
   };
-  total.engage_rate = +(total.engaged/total.reached*100).toFixed(2);
-  total.react_rate  = +((total.likes+total.comments+total.saves+total.shares)/total.reached*100).toFixed(2);
+  total.참여율 = +((total.likes + total.comments + total.saves + total.shares) / total.reached * 100).toFixed(2);
+  total.반응률 = +((total.engaged / total.reached) * 100).toFixed(2);
 
-  // 차트 데이터 준비
-  female.engage_rate = female['참여율'] || +(female['참여한 계정']/female['도달된 계정']*100).toFixed(2);
-  female.react_rate = female['반응률'] || +((female.좋아요+female.댓글+female.저장+female.공유)/female['도달된 계정']*100).toFixed(2);
-  
-  male.engage_rate = male['참여율'] || +(male['참여한 계정']/male['도달된 계정']*100).toFixed(2);
-  male.react_rate = male['반응률'] || +((male.좋아요+male.댓글+male.저장+male.공유)/male['도달된 계정']*100).toFixed(2);
+  female.참여율 = +(((female.좋아요 + female.댓글 + female.저장 + female.공유) / female['도달된 계정']) * 100).toFixed(2);
+  female.반응률 = +((female['참여한 계정'] / female['도달된 계정']) * 100).toFixed(2);
+
+  male.참여율 = +(((male.좋아요 + male.댓글 + male.저장 + male.공유) / male['도달된 계정']) * 100).toFixed(2);
+  male.반응률 = +((male['참여한 계정'] / male['도달된 계정']) * 100).toFixed(2);
 
   // total 객체의 속성 이름을 한글로 매핑 (이 부분이 추가됨)
   total.좋아요 = total.likes;
@@ -80,8 +79,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   total.공유 = total.shares;
 
   // 5) DOM에 숫자 채워넣기
-  document.getElementById('totalEngageRate').textContent = total.engage_rate;
-  document.getElementById('totalReactRate').textContent  = total.react_rate;
+  document.getElementById('totalEngageRate').textContent = total.참여율;
+  document.getElementById('totalReactRate').textContent  = total.반응률;
   document.getElementById('totalLikes').textContent      = total.likes;
   document.getElementById('totalComments').textContent   = total.comments;
   document.getElementById('totalSaves').textContent      = total.saves;
@@ -101,16 +100,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             Number(stats.댓글 || 0),
             Number(stats.저장 || 0),
             Number(stats.공유 || 0),
-            Number(stats.engage_rate || 0),
-            Number(stats.react_rate || 0)
+            Number(stats.참여율 || 0),
+            Number(stats.반응률 || 0)
           ],
           backgroundColor: [
             'rgba(52,152,219,0.7)',
             'rgba(231,76,60,0.7)',
             'rgba(46,204,113,0.7)',
             'rgba(155,89,182,0.7)',
-            'rgba(241,196,15,0.7)',
-            'rgba(230,126,34,0.7)'
+            'rgba(230,126,34,0.7)',
+            'rgba(241,196,15,0.7)'
           ]
         }]
       },
