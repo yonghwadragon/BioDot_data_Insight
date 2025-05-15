@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // 7) 차트 렌더링
-  makeChart('engageFemale',   '여성 릴스',   female);
-  makeChart('engageMale',     '남성 릴스',   male);
+  makeChart('engageFemale',   '체험 릴스 반말 ver',   female);
+  makeChart('engageMale',     '체험 릴스 높임말 ver',   male);
   makeChart('engagementChart','전체 합산',   total);
 });
