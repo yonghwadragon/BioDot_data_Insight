@@ -157,10 +157,10 @@
     </section>
 
     <section>
-      <h2>성과 요약</h2>
+      <h2>체험 릴스 성과 요약</h2>
       <ul>
-        <li>합산 참여율: <strong><span id="totalEngageRate">-</span>%</strong></li>
-        <li>합산 반응률: <strong><span id="totalReactRate">-</span>%</strong></li>
+        <li>체험 릴스 합산 참여율: <strong><span id="totalEngageRate">-</span>%</strong></li>
+        <li>체험 릴스 합산 반응률: <strong><span id="totalReactRate">-</span>%</strong></li>
         <li>
           합산 좋아요/댓글/저장/공유:
           <strong><span id="totalLikes">-</span></strong> /
@@ -178,19 +178,71 @@
 
       <p>👀 "먼저 듣고 나니 덜 부담스러웠어요"<br>📌 시각보다 청각이 먼저인 전략적 유도</p>
       
-      <!-- 새로 추가된 ASMR 콘텐츠 섹션 -->
+      <!-- ✅ 수정된 ASMR 콘텐츠 섹션 -->
       <h3>📌 콘텐츠 ③: 젤리 정통 ASMR</h3>
       <video controls style="width:100%;max-width:420px;aspect-ratio:9/16;border-radius:12px;">
         <source src="video/(2-1)젤리 정통 ASMR.mp4" type="video/mp4">
       </video>
-      <p><a href="#" class="coming-soon">🔗 릴스 링크 (업로드 예정)</a></p>
+      <p>
+        <a href="https://www.instagram.com/reel/DJq8LOdPsxf/" target="_blank">
+          🔗 릴스 링크 보기
+        </a>
+      </p>
       <div class="chart-container">
-        <div class="pending-data-notice">
-          <p style="font-size:18px;color:#555;margin:0;">📊 성과 지표 집계 중</p>
-          <p style="font-size:14px;color:#777;margin-top:10px;">릴스 게시 후 7일간의 데이터를 수집하여 추후 업데이트 예정입니다.</p>
-        </div>
+       <canvas id="asmrDetailChart"></canvas>
+      </div>
+
+    </section>
+     <section>
+  <h3>📌 콘텐츠 ④: 한동 카페 오픈</h3>
+  <!-- video 태그는 꼭 source 직후 닫아 줍니다 -->
+  <video controls style="width:100%;max-width:420px;aspect-ratio:9/16;border-radius:12px;">
+    <source src="video/한동카페오픈.mp4" type="video/mp4">
+  </video>
+
+  <!-- 릴스 링크 -->
+  <p>
+    <a href="https://www.instagram.com/reel/DJ1FEZaP7S1/" target="_blank">
+      🔗 릴스 링크 보기
+    </a>
+  </p>
+
+  <!-- pending notice 는 video 바깥에 있어야 보입니다 -->
+  <div class="chart-container">
+    <div class="pending-data-notice">
+      <p style="font-size:18px;color:#555;margin:0;">📊 성과 지표 집계 중</p>
+      <p style="font-size:14px;color:#777;margin-top:10px;">
+        릴스 게시 후 7일간의 데이터를 수집하여 추후 업데이트 예정입니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+      <section>
+      <h2>ASMR 콘텐츠 성과 요약</h2>
+      <ul>
+        <li>ASMR 참여율: <strong><span id="asmrEngageRate">-</span>%</strong></li>
+        <li>ASMR 반응률: <strong><span id="asmrReactRate">-</span>%</strong></li>
+        <li>
+          좋아요/댓글/저장/공유:
+          <strong><span id="asmrLikes">-</span></strong> /
+          <strong><span id="asmrComments">-</span></strong> /
+          <strong><span id="asmrSaves">-</span></strong> /
+          <strong><span id="asmrShares">-</span></strong>
+        </li>
+      </ul>
+       <div class="chart-container">
+         <canvas id="asmrChart"></canvas>
+       </div>
+    </section>
+
+    <section>
+      <h2>전체 콘텐츠 성과</h2>
+      <div class="chart-container">
+        <canvas id="overallChart"></canvas>
       </div>
     </section>
+
   </main>
 
     <footer>
