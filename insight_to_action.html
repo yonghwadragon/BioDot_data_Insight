@@ -21,24 +21,37 @@
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-  <style>
-    a { color: #3498db; text-decoration: none; }
-    nav ul li a:hover { text-decoration: none; }
-    a:visited { color: #3498db; }
-    
-    /* 신규 스타일 추가 */
-    .coming-soon {
-      color: #7f8c8d;
-      cursor: default;
-    }
-    .pending-data-notice {
-      text-align: center;
-      padding: 30px;
-      background: #f8f9fa;
-      border-radius: 10px;
-      border: 1px dashed #ddd;
-    }
-  </style>
+<style>
+  a { color: #3498db; text-decoration: none; }
+  nav ul li a:hover { text-decoration: none; }
+  a:visited { color: #3498db; }
+  .coming-soon {
+    color: #7f8c8d;
+    cursor: default;
+  }
+  .pending-data-notice {
+    text-align: center;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px dashed #ddd;
+  }
+
+  .chart-container canvas {
+  max-width: 100% !important;
+  height: 400px !important; /* ✅ 고정값 */
+  box-sizing: border-box;
+  display: block;
+  margin: 0 auto;
+}
+  .chart-container {
+    position: relative;
+    margin: 20px auto;
+    height: 400px;
+    width: 100%;
+    /* - overflow-x: auto; 제거됨 */
+  }
+</style>
 </head>
 <body>
   <noscript>
@@ -206,15 +219,11 @@
     </a>
   </p>
 
-  <!-- pending notice 는 video 바깥에 있어야 보입니다 -->
+  <!-- + 쉐이크 ASMR 차트 삽입 -->
   <div class="chart-container">
-    <div class="pending-data-notice">
-      <p style="font-size:18px;color:#555;margin:0;">📊 성과 지표 집계 중</p>
-      <p style="font-size:14px;color:#777;margin-top:10px;">
-        릴스 게시 후 7일간의 데이터를 수집하여 추후 업데이트 예정입니다.
-      </p>
-    </div>
+    <canvas id="shakeDetailChart"></canvas>
   </div>
+
 </section>
 
       <section>
