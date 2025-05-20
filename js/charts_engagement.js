@@ -182,4 +182,29 @@ function makeChart(id, title, stats) {
   makeChart('asmrChart',        'ASMR 콘텐츠 성과 요약',   statsAsmr);
   if (shake) makeChart('shakeDetailChart', '쉐이크 ASMR 성과', statsShakeDetail);
   makeChart('overallChart',     '전체 콘텐츠 성과',        statsOverall);
+  
+function insertFormula(blockId, stats) {
+  const el = document.getElementById(blockId);
+  if (!el) return;
+  const a = stats.좋아요, b = stats.댓글, c = stats.저장, d = stats.공유;
+  const e = stats.도달, f = stats.참여;
+
+  const 참여율계산 = `참여율 (%) = (좋아요 + 댓글 + 저장 + 공유) ÷ 도달된 계정 수 × 100
+           = (${a} + ${b} + ${c} + ${d}) ÷ ${e} × 100
+           = ${(a + b + c + d)} ÷ ${e} × 100 ≒ ${stats.참여율}%`;
+
+  const 반응률계산 = `반응률 (%) = 참여한 계정 ÷ 도달된 계정 수 × 100
+           = ${f} ÷ ${e} × 100 ≒ ${stats.반응률}%`;
+
+  el.textContent = `${참여율계산}\n\n${반응률계산}`;
+  }
+  // ✅ 차트 렌더 후 수식 삽입
+insertFormula('overallFormulaBlock', statsOverall);
+insertFormula('totalFormulaBlock', statsTotal);
+insertFormula('asmrFormulaBlock', statsAsmr);
+insertFormula('femaleFormulaBlock', statsFemale);
+insertFormula('maleFormulaBlock', statsMale);
+insertFormula('asmrDetailFormulaBlock', statsAsmrDetail);
+if (shake) insertFormula('shakeDetailFormulaBlock', statsShakeDetail);
+
 });
