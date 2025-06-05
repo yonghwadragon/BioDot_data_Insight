@@ -1,5 +1,5 @@
 // js/charts_engagement.js
-// v2025.06.05 — 전체 콘텐츠 성과 자동 렌더링 + 12개 콘텐츠 대응
+// v2025.06.05 — 전체 콘텐츠 성과 자동 렌더링 + 12개 콘텐츠 대응 + 평균 개선
 
 Chart.register(ChartDataLabels);
 
@@ -68,26 +68,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   const sum = (...keys) => calcStats(keys.map(k => statsMap[k]).filter(Boolean));
+  const avg = (keys, n) => {
+    const s = sum(...keys);
+    return { ...s, 좋아요: Math.round(s.좋아요 / n), 댓글: Math.round(s.댓글 / n), 저장: Math.round(s.저장 / n), 공유: Math.round(s.공유 / n) };
+  };
 
   const chartList = [
     ['engageFemale', '체험 릴스 반말 ver', sum('female')],
     ['engageMale', '체험 릴스 높임말 ver', sum('male')],
-    ['engagementChart', '체험 릴스 전체 합산', sum('female', 'male')],
+    ['engagementChart', '체험 릴스 전체 평균', avg(['female', 'male'], 2)],
     ['asmrDetailChart', '젤리 정통 ASMR 성과', sum('asmr')],
     ['shakeDetailChart', '쉐이크 ASMR 성과', sum('shake')],
-    ['asmrChart', 'ASMR 콘텐츠 성과 요약', sum('asmr', 'shake')],
+    ['asmrChart', 'ASMR 콘텐츠 전체 평균', avg(['asmr', 'shake'], 2)],
     ['teamLeaderChart', '한동팀장은 근무중', sum('teamLeader')],
     ['charInfo1Chart', '캐릭터(1)', sum('char1')],
     ['charInfo2Chart', '캐릭터(2)', sum('char2')],
     ['slowAgingChart', '저속노화', sum('slow')],
-    ['characterSummaryChart', '캐릭터 콘텐츠 요약', sum('teamLeader', 'char1', 'char2', 'slow')],
+    ['characterSummaryChart', '캐릭터 콘텐츠 전체 평균', avg(['teamLeader', 'char1', 'char2', 'slow'], 3)],
     ['noknokChart', '녹녹디어', sum('noknok')],
     ['goodthingChart', '굿띵 챌린지', sum('good')],
-    ['memeChallengeChart', '밈/챌린지 콘텐츠 요약', sum('noknok', 'good')],
+    ['memeChallengeChart', '밈/챌린지 콘텐츠 전체 평균', avg(['noknok', 'good'], 1)],
     ['ng1Chart', 'NG컷 1', sum('ng1')],
     ['ng2Chart', 'NG컷 2', sum('ng2')],
-    ['ngSummaryChart', 'NG컷 콘텐츠 요약', sum('ng1', 'ng2')],
-    ['overallChart', '전체 콘텐츠 성과', sum(...Object.keys(picks))]
+    ['ngSummaryChart', 'NG 콘텐츠 전체 평균', avg(['ng1', 'ng2'], 2)],
+    ['overallChart', '전체 콘텐츠 평균', avg(['female','male','asmr','shake','teamLeader','char1','char2','slow','noknok','good','ng1','ng2'], 10)]
   ];
 
   function makeChart(id, title, stats) {
@@ -139,29 +143,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     el.textContent = `참여율 (%) = (좋아요 + 댓글 + 저장 + 공유) ÷ 도달된 계정 수 × 100\n = (${a} + ${b} + ${c} + ${d}) ÷ ${e} × 100\n = ${(a + b + c + d)} ÷ ${e} × 100 ≒ ${stats.참여율}%\n\n반응률 (%) = 참여한 계정 ÷ 도달된 계정 수 × 100\n = ${f} ÷ ${e} × 100 ≒ ${stats.반응률}%`;
   }
 
-const formulaMap = {
-  engageFemale: 'femaleFormulaBlock',
-  engageMale: 'maleFormulaBlock',
-  engagementChart: 'totalFormulaBlock',
-  asmrChart: 'asmrFormulaBlock',
-  asmrDetailChart: 'asmrDetailFormulaBlock',
-  shakeDetailChart: 'shakeDetailFormulaBlock',
-  teamLeaderChart: 'teamLeaderFormulaBlock',
-  charInfo1Chart: 'charInfo1FormulaBlock',
-  charInfo2Chart: 'charInfo2FormulaBlock',
-  slowAgingChart: 'slowAgingFormulaBlock',
-  characterSummaryChart: 'characterSummaryFormula',
-  noknokChart: 'noknokFormulaBlock',
-  goodthingChart: 'goodthingFormulaBlock',
-  memeChallengeChart: 'memeChallengeFormula',
-  ng1Chart: 'ng1FormulaBlock',
-  ng2Chart: 'ng2FormulaBlock',
-  ngSummaryChart: 'ngSummaryFormula',
-  overallChart: 'overallFormulaBlock'
-};
+  const formulaMap = {
+    engageFemale: 'femaleFormulaBlock',
+    engageMale: 'maleFormulaBlock',
+    engagementChart: 'totalFormulaBlock',
+    asmrChart: 'asmrFormulaBlock',
+    asmrDetailChart: 'asmrDetailFormulaBlock',
+    shakeDetailChart: 'shakeDetailFormulaBlock',
+    teamLeaderChart: 'teamLeaderFormulaBlock',
+    charInfo1Chart: 'charInfo1FormulaBlock',
+    charInfo2Chart: 'charInfo2FormulaBlock',
+    slowAgingChart: 'slowAgingFormulaBlock',
+    characterSummaryChart: 'characterSummaryFormula',
+    noknokChart: 'noknokFormulaBlock',
+    goodthingChart: 'goodthingFormulaBlock',
+    memeChallengeChart: 'memeChallengeFormula',
+    ng1Chart: 'ng1FormulaBlock',
+    ng2Chart: 'ng2FormulaBlock',
+    ngSummaryChart: 'ngSummaryFormula',
+    overallChart: 'overallFormulaBlock'
+  };
 
-chartList.forEach(([id, title, stats]) => {
-  makeChart(id, title, stats);
-  if (formulaMap[id]) insertFormula(formulaMap[id], stats);  // ✅ 수식 출력도 함께 실행
-});
+  chartList.forEach(([id, title, stats]) => {
+    makeChart(id, title, stats);
+    if (formulaMap[id]) insertFormula(formulaMap[id], stats);
+  });
 });
