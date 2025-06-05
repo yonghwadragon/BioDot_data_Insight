@@ -192,4 +192,55 @@ document.addEventListener('DOMContentLoaded', async () => {
     makeChart(id, title, stats);
     if (formulaMap[id]) insertFormula(formulaMap[id], stats);
   });
+    const trendCanvas = document.getElementById('engageTrendChart');
+  if (trendCanvas) {
+    const trendCtx = trendCanvas.getContext('2d');
+    new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: [
+          '5월 19일 (3편)', '5월 20일 (3편)', '5월 21일 (4편)',
+          '5월 22일 (4편)', '5월 23일 (5편)', '6월 4일 (9편)'
+        ],
+        datasets: [{
+          label: '참여율 (%)',
+          data: [2.33, 2.64, 2.78, 2.79, 2.85, 3.62],
+          borderColor: '#3498db',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          tension: 0.3
+        },
+        {
+          label: '목표선 (3배 기준)',
+          data: [3.0, 3.0, 3.0, 3.0, 3.0, 3.0],
+          borderColor: 'red',
+          borderDash: [6, 6],
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: '기존 대비 참여율 증가 배수 추이(단, 이벤트 제외)'
+          },
+          tooltip: {
+            callbacks: {
+              label: ctx => `${ctx.parsed.y}%`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: '참여율 (%)' },
+            ticks: { callback: v => `${v}%` }
+          }
+        }
+      }
+    });
+  }
 });
