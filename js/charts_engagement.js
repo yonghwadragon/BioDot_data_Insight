@@ -108,13 +108,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             label: '행동 수치',
             data: [stats.좋아요, stats.댓글, stats.저장, stats.공유, null, null],
             backgroundColor: ['#3498dbcc','#e74c3ccc','#2ecc71cc','#9b59b6cc','transparent','transparent'],
-            yAxisID: 'y', grouped: false
+            yAxisID: 'y', grouped: false,
+            datalabels: { anchor: 'end', align: 'start', offset: -20 }
           },
           {
             label: '비율(%)',
             data: [null,null,null,null,stats.참여율,stats.반응률],
             backgroundColor: ['#f1c40fcc','#e67e22cc'],
-            yAxisID: 'y1', grouped: false
+            yAxisID: 'y1', grouped: false,
+            datalabels: { anchor: 'end', align: 'start', offset: -20 }
           },
           {
            label: '과거 평균 행동 수치선',
