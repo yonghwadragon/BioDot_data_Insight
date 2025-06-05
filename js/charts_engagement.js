@@ -1,5 +1,5 @@
 // js/charts_engagement.js
-// v2025.05.21 — 날짜 추가 + shake ASMR 반영 + 이중 Y축에서 비율은 막대 유지
+// v2025.06.05 — 전체 콘텐츠 성과 자동 렌더링 + 12개 콘텐츠 대응
 
 Chart.register(ChartDataLabels);
 
@@ -35,16 +35,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   const getByName = kw => Object.keys(latest).find(k => k.includes(kw));
-  const female = latest[getByName('반말ver')];
-  const male   = latest[getByName('존댓말ver')];
-  const asmr   = latest[getByName('ASMR')];
-  const shake  = latest[getByName('쉐이크')] || latest[getByName('shake')];
-  const cafe   = shake || latest[getByName('카페')];
+  const picks = {
+    female: '반말ver', male: '존댓말ver', asmr: 'ASMR',
+    shake: '쉐이크', cafe: '카페',
+    teamLeader: '팀장은 근무중',
+    char1: '캐릭터(1)', char2: '캐릭터(2)', slow: '저속노화',
+    noknok: '녹녹디어', good: '굿띵',
+    ng1: 'NG(1)', ng2: 'NG(2)'
+  };
 
-  if (!female || !male || !asmr) {
-    console.error('❌ 필수 콘텐츠 누락:', Object.keys(latest));
-    return;
-  }
+  const statsMap = {};
+  Object.entries(picks).forEach(([k, kw]) => {
+    const key = getByName(kw);
+    if (key) statsMap[k] = latest[key];
+  });
 
   const calcStats = list => {
     const total = { 좋아요: 0, 댓글: 0, 저장: 0, 공유: 0, 도달: 0, 참여: 0, 날짜들: [] };
@@ -63,148 +67,81 @@ document.addEventListener('DOMContentLoaded', async () => {
     return { ...total, 참여율, 반응률 };
   };
 
-  const statsFemale      = calcStats([female]);
-  const statsMale        = calcStats([male]);
-  const statsAsmrDetail  = calcStats([asmr]);
-  const statsShakeDetail = calcStats([shake]);
-  const statsAsmr        = calcStats([asmr, shake].filter(Boolean));
-  const statsTotal       = calcStats([female, male]);
-  const statsOverall     = calcStats([female, male, asmr, shake].filter(Boolean));
+  const sum = (...keys) => calcStats(keys.map(k => statsMap[k]).filter(Boolean));
 
-  const setText = (id, v) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = v;
-  };
+  const chartList = [
+    ['engageFemale', '체험 릴스 반말 ver', sum('female')],
+    ['engageMale', '체험 릴스 높임말 ver', sum('male')],
+    ['engagementChart', '체험 릴스 전체 합산', sum('female', 'male')],
+    ['asmrDetailChart', '젤리 정통 ASMR 성과', sum('asmr')],
+    ['shakeDetailChart', '쉐이크 ASMR 성과', sum('shake')],
+    ['asmrChart', 'ASMR 콘텐츠 성과 요약', sum('asmr', 'shake')],
+    ['teamLeaderChart', '한동팀장은 근무중', sum('teamLeader')],
+    ['charInfo1Chart', '캐릭터(1)', sum('char1')],
+    ['charInfo2Chart', '캐릭터(2)', sum('char2')],
+    ['slowAgingChart', '저속노화', sum('slow')],
+    ['characterSummaryChart', '캐릭터 콘텐츠 요약', sum('teamLeader', 'char1', 'char2', 'slow')],
+    ['noknokChart', '녹녹디어', sum('noknok')],
+    ['goodthingChart', '굿띵 챌린지', sum('good')],
+    ['memeChallengeChart', '밈/챌린지 콘텐츠 요약', sum('noknok', 'good')],
+    ['ng1Chart', 'NG컷 1', sum('ng1')],
+    ['ng2Chart', 'NG컷 2', sum('ng2')],
+    ['ngSummaryChart', 'NG컷 콘텐츠 요약', sum('ng1', 'ng2')],
+    ['overallChart', '전체 콘텐츠 성과', sum(...Object.keys(picks))]
+  ];
 
-  setText('totalEngageRate', statsTotal.참여율);
-  setText('totalReactRate',  statsTotal.반응률);
-  setText('totalLikes',      statsTotal.좋아요);
-  setText('totalComments',   statsTotal.댓글);
-  setText('totalSaves',      statsTotal.저장);
-  setText('totalShares',     statsTotal.공유);
-
-  setText('asmrEngageRate', statsAsmr.참여율);
-  setText('asmrReactRate',  statsAsmr.반응률);
-  setText('asmrLikes',      statsAsmr.좋아요);
-  setText('asmrComments',   statsAsmr.댓글);
-  setText('asmrSaves',      statsAsmr.저장);
-  setText('asmrShares',     statsAsmr.공유);
-
-function makeChart(id, title, stats) {
-  const canvas = document.getElementById(id);
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let dateStr = '';
-  if (stats.날짜들?.length) {
-    const uniq = [...new Set(stats.날짜들)];
-    dateStr = uniq.length > 1 ? ` (${uniq.join(', ')})` : ` (${uniq[0]})`;
-  }
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['좋아요', '댓글', '저장', '공유', '참여율(%)', '반응률(%)'],
-      datasets: [
-        {
-          label: '행동 수치',
-          data: [
-            stats.좋아요,
-            stats.댓글,
-            stats.저장,
-            stats.공유,
-            null,
-            null
-          ],
-          backgroundColor: [
-            'rgba(52,152,219,0.7)',
-            'rgba(231,76,60,0.7)',
-            'rgba(46,204,113,0.7)',
-            'rgba(155,89,182,0.7)',
-            'rgba(241,196,15,0.0)', // 투명
-            'rgba(230,126,34,0.0)'
-          ],
-          yAxisID: 'y',
-          barPercentage: 0.9,
-          categoryPercentage: 0.9,
-          grouped: false
-        },
-        {
-          label: '비율(%)',
-          data: [
-            null,
-            null,
-            null,
-            null,
-            stats.참여율,
-            stats.반응률
-          ],
-          backgroundColor: [
-            'rgba(241,196,15,0.7)',
-            'rgba(230,126,34,0.7)'
-          ],
-          yAxisID: 'y1',
-          barPercentage: 0.9,
-          categoryPercentage: 0.9,
-          grouped: false
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: title + dateStr },
-        datalabels: {
-          anchor: 'end', align: 'start', color: '#000', font: { weight: 'bold' },
-          formatter: (v, ctx) => {
-            if (ctx.dataset.yAxisID === 'y1' && v !== null) return v + '%';
-            return v === null ? '' : v;
+  function makeChart(id, title, stats) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let dateStr = stats.날짜들?.length ? ` (${[...new Set(stats.날짜들)].join(', ')})` : '';
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['좋아요', '댓글', '저장', '공유', '참여율(%)', '반응률(%)'],
+        datasets: [
+          {
+            label: '행동 수치',
+            data: [stats.좋아요, stats.댓글, stats.저장, stats.공유, null, null],
+            backgroundColor: ['#3498dbcc','#e74c3ccc','#2ecc71cc','#9b59b6cc','transparent','transparent'],
+            yAxisID: 'y', grouped: false
+          },
+          {
+            label: '비율(%)',
+            data: [null,null,null,null,stats.참여율,stats.반응률],
+            backgroundColor: ['#f1c40fcc','#e67e22cc'],
+            yAxisID: 'y1', grouped: false
           }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: { display: true, text: title + dateStr },
+          datalabels: {
+            anchor: 'end', align: 'start', color: '#000', font: { weight: 'bold' },
+            formatter: (v, ctx) => ctx.dataset.yAxisID === 'y1' && v !== null ? v + '%' : (v ?? '')
+          }
+        },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: '행동 수치' } },
+          y1: { beginAtZero: true, position: 'right', title: { display: true, text: '비율(%)' }, grid: { drawOnChartArea: false }, ticks: { callback: v => v + '%' } }
         }
       },
-      scales: {
-        y:  { beginAtZero: true, title: { display: true, text: '행동 수치' } },
-        y1: {
-          beginAtZero: true,
-          position: 'right',
-          title: { display: true, text: '비율(%)' },
-          grid: { drawOnChartArea: false },
-          ticks: { callback: v => v + '%' }
-        }
-      }
-    },
-    plugins: [ChartDataLabels]
-  });
-}
-
-  makeChart('engageFemale',     '체험 릴스 반말 ver',      statsFemale);
-  makeChart('engageMale',       '체험 릴스 높임말 ver',    statsMale);
-  makeChart('engagementChart',  '체험 릴스 전체 합산',     statsTotal);
-  makeChart('asmrDetailChart',  '젤리 정통 ASMR 성과',     statsAsmrDetail);
-  makeChart('asmrChart',        'ASMR 콘텐츠 성과 요약',   statsAsmr);
-  if (shake) makeChart('shakeDetailChart', '쉐이크 ASMR 성과', statsShakeDetail);
-  makeChart('overallChart',     '전체 콘텐츠 성과',        statsOverall);
-  
-function insertFormula(blockId, stats) {
-  const el = document.getElementById(blockId);
-  if (!el) return;
-  const a = stats.좋아요, b = stats.댓글, c = stats.저장, d = stats.공유;
-  const e = stats.도달, f = stats.참여;
-
-  const 참여율계산 = `참여율 (%) = (좋아요 + 댓글 + 저장 + 공유) ÷ 도달된 계정 수 × 100
-           = (${a} + ${b} + ${c} + ${d}) ÷ ${e} × 100
-           = ${(a + b + c + d)} ÷ ${e} × 100 ≒ ${stats.참여율}%`;
-
-  const 반응률계산 = `반응률 (%) = 참여한 계정 ÷ 도달된 계정 수 × 100
-           = ${f} ÷ ${e} × 100 ≒ ${stats.반응률}%`;
-
-  el.textContent = `${참여율계산}\n\n${반응률계산}`;
+      plugins: [ChartDataLabels]
+    });
   }
-  // ✅ 차트 렌더 후 수식 삽입
-insertFormula('overallFormulaBlock', statsOverall);
-insertFormula('totalFormulaBlock', statsTotal);
-insertFormula('asmrFormulaBlock', statsAsmr);
-insertFormula('femaleFormulaBlock', statsFemale);
-insertFormula('maleFormulaBlock', statsMale);
-insertFormula('asmrDetailFormulaBlock', statsAsmrDetail);
-if (shake) insertFormula('shakeDetailFormulaBlock', statsShakeDetail);
 
+  function insertFormula(blockId, stats) {
+    const el = document.getElementById(blockId);
+    if (!el) return;
+    const a = stats.좋아요, b = stats.댓글, c = stats.저장, d = stats.공유, e = stats.도달, f = stats.참여;
+    el.textContent = `참여율 (%) = (좋아요 + 댓글 + 저장 + 공유) ÷ 도달된 계정 수 × 100\n = (${a} + ${b} + ${c} + ${d}) ÷ ${e} × 100\n = ${(a + b + c + d)} ÷ ${e} × 100 ≒ ${stats.참여율}%\n\n반응률 (%) = 참여한 계정 ÷ 도달된 계정 수 × 100\n = ${f} ÷ ${e} × 100 ≒ ${stats.반응률}%`;
+  }
+
+  chartList.forEach(([id, title, stats]) => {
+    makeChart(id, title, stats);
+    const blockId = id.replace('Chart', 'FormulaBlock');
+    insertFormula(blockId, stats);
+  });
 });
