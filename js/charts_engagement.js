@@ -115,7 +115,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             data: [null,null,null,null,stats.참여율,stats.반응률],
             backgroundColor: ['#f1c40fcc','#e67e22cc'],
             yAxisID: 'y1', grouped: false
-          }
+          },
+          {
+           label: '과거 평균 행동 수치선',
+           data: [134.33, 0.33, 0.67, 0.5, null, null],
+           type: 'line',
+           borderColor: 'red',
+           borderDash: [4, 4],
+           borderWidth: 1,
+           pointRadius: 0,
+           fill: false,
+           yAxisID: 'y'
+         },
+         {
+           label: '과거 비율 평균선',
+           data: [null, null, null, null, 1.24, 4.26],
+           type: 'line',
+           borderColor: 'red',
+           borderDash: [4, 4],
+           borderWidth: 1,
+           pointRadius: 0,
+           fill: false,
+           yAxisID: 'y1'
+         }
         ]
       },
       options: {
@@ -123,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         plugins: {
           title: { display: true, text: title + dateStr },
           datalabels: {
-            anchor: 'end', align: 'start', color: '#000', font: { weight: 'bold' },
+            anchor: 'end', align: 'start', offset: -17, color: '#000', font: { weight: 'bold' },
             formatter: (v, ctx) => ctx.dataset.yAxisID === 'y1' && v !== null ? v + '%' : (v ?? '')
           }
         },
