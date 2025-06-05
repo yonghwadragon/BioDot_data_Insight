@@ -139,9 +139,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     el.textContent = `참여율 (%) = (좋아요 + 댓글 + 저장 + 공유) ÷ 도달된 계정 수 × 100\n = (${a} + ${b} + ${c} + ${d}) ÷ ${e} × 100\n = ${(a + b + c + d)} ÷ ${e} × 100 ≒ ${stats.참여율}%\n\n반응률 (%) = 참여한 계정 ÷ 도달된 계정 수 × 100\n = ${f} ÷ ${e} × 100 ≒ ${stats.반응률}%`;
   }
 
-  chartList.forEach(([id, title, stats]) => {
-    makeChart(id, title, stats);
-    const blockId = id.replace('Chart', 'FormulaBlock');
-    insertFormula(blockId, stats);
-  });
+const formulaMap = {
+  engageFemale: 'femaleFormulaBlock',
+  engageMale: 'maleFormulaBlock',
+  engagementChart: 'totalFormulaBlock',
+  asmrChart: 'asmrFormulaBlock',
+  asmrDetailChart: 'asmrDetailFormulaBlock',
+  shakeDetailChart: 'shakeDetailFormulaBlock',
+  teamLeaderChart: 'teamLeaderFormulaBlock',
+  charInfo1Chart: 'charInfo1FormulaBlock',
+  charInfo2Chart: 'charInfo2FormulaBlock',
+  slowAgingChart: 'slowAgingFormulaBlock',
+  characterSummaryChart: 'characterSummaryFormula',
+  noknokChart: 'noknokFormulaBlock',
+  goodthingChart: 'goodthingFormulaBlock',
+  memeChallengeChart: 'memeChallengeFormula',
+  ng1Chart: 'ng1FormulaBlock',
+  ng2Chart: 'ng2FormulaBlock',
+  ngSummaryChart: 'ngSummaryFormula',
+  overallChart: 'overallFormulaBlock'
+};
+
+chartList.forEach(([id, title, stats]) => {
+  makeChart(id, title, stats);
+  if (formulaMap[id]) insertFormula(formulaMap[id], stats);  // ✅ 수식 출력도 함께 실행
+});
 });
