@@ -76,22 +76,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const chartList = [
     ['engageFemale', '체험 릴스 반말 ver', sum('female')],
     ['engageMale', '체험 릴스 높임말 ver', sum('male')],
-    ['engagementChart', '체험 릴스 전체 평균', avg(['female', 'male'], 2)],
+    ['engagementChart', '체험 릴스 전체 평균', avg(['female', 'male'], 2),2],
     ['asmrDetailChart', '젤리 정통 ASMR 성과', sum('asmr')],
     ['shakeDetailChart', '쉐이크 ASMR 성과', sum('shake')],
-    ['asmrChart', 'ASMR 콘텐츠 전체 평균', avg(['asmr', 'shake'], 2)],
+    ['asmrChart', 'ASMR 콘텐츠 전체 평균', avg(['asmr', 'shake'], 2),2],
     ['teamLeaderChart', '한동팀장은 근무중', sum('teamLeader')],
     ['charInfo1Chart', '캐릭터(1)', sum('char1')],
     ['charInfo2Chart', '캐릭터(2)', sum('char2')],
     ['slowAgingChart', '저속노화', sum('slow')],
-    ['characterSummaryChart', '캐릭터 콘텐츠 전체 평균', avg(['teamLeader', 'char1', 'char2', 'slow'], 4)],
+    ['characterSummaryChart', '캐릭터 콘텐츠 전체 평균', avg(['teamLeader', 'char1', 'char2', 'slow'], 4),4],
     ['noknokChart', '녹녹디어', sum('noknok')],
     ['goodthingChart', '굿띵 챌린지', sum('good')],
-    ['memeChallengeChart', '밈/챌린지 콘텐츠 전체 평균', avg(['noknok', 'good'], 2)],
+    ['memeChallengeChart', '밈/챌린지 콘텐츠 전체 평균', avg(['noknok', 'good'], 2),2],
     ['ng1Chart', 'NG컷 1', sum('ng1')],
     ['ng2Chart', 'NG컷 2', sum('ng2')],
-    ['ngSummaryChart', 'NG 콘텐츠 전체 평균', avg(['ng1', 'ng2'], 2)],
-    ['overallChart', '전체 콘텐츠 평균', avg(['female','male','asmr','shake','teamLeader','char1','char2','slow','noknok','good','ng1','ng2'], 12)]
+    ['ngSummaryChart', 'NG 콘텐츠 전체 평균', avg(['ng1', 'ng2'], 2),2],
+    ['overallChart', '전체 콘텐츠 평균', avg(['female','male','asmr','shake','teamLeader','char1','char2','slow','noknok','good','ng1','ng2'], 12),12]
   ];
 
   function makeChart(id, title, stats) {
@@ -160,11 +160,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  function insertFormula(blockId, stats) {
+ function insertFormula(blockId, stats, count = 1) {
     const el = document.getElementById(blockId);
     if (!el) return;
     const a = stats.좋아요, b = stats.댓글, c = stats.저장, d = stats.공유, e = stats.도달, f = stats.참여;
-    el.textContent = `참여율 (%) = (좋아요 + 댓글 + 저장 + 공유) ÷ 도달된 계정 수 × 100\n = (${a} + ${b} + ${c} + ${d}) ÷ ${e} × 100\n = ${(a + b + c + d)} ÷ ${e} × 100 ≒ ${stats.참여율}%\n\n반응률 (%) = 참여한 계정 ÷ 도달된 계정 수 × 100\n = ${f} ÷ ${e} × 100 ≒ ${stats.반응률}%`;
+
+const avgE = count > 1 ? Math.round(e / count) : e;
+
+   el.textContent = `참여율 (%) = (좋아요 + 댓글 + 저장 + 공유) ÷ ${count > 1 ? '평균 도달된 계정 수' : '도달된 계정 수'} × 100\n`
+     + ` = (${a} + ${b} + ${c} + ${d}) ÷ ${avgE} × 100\n`
+     + ` = ${(a + b + c + d)} ÷ ${avgE} × 100 ≒ ${stats.참여율}%\n\n`
+     + `반응률 (%) = 참여한 계정 ÷ ${count > 1 ? '평균 도달된 계정 수' : '도달된 계정 수'} × 100\n`
+     + ` = ${f} ÷ ${avgE} × 100 ≒ ${stats.반응률}%`;
   }
 
   const formulaMap = {
@@ -188,9 +195,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     overallChart: 'overallFormulaBlock'
   };
 
-  chartList.forEach(([id, title, stats]) => {
+  chartList.forEach(([id, title, stats, count = 1]) => {
     makeChart(id, title, stats);
-    if (formulaMap[id]) insertFormula(formulaMap[id], stats);
+    if (formulaMap[id]) insertFormula(formulaMap[id], stats, count);
   });
     const trendCanvas = document.getElementById('engageTrendChart');
   if (trendCanvas) {

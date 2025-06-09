@@ -185,6 +185,22 @@
 
     <section>
       <h2>What we did → 콘텐츠 실행</h2>
+        <p style="margin-top:20px; font-size:14px; color:#666; line-height:1.7;">
+          ※ 그룹별 및 전체 콘텐츠에서는<br>
+          좋아요, 댓글, 저장, 공유 수치와 평균 도달 수를<br>
+          각 콘텐츠의 평균값을 <strong>정수로 반올림</strong>하여 표기하였으며,<br>
+          이는 개별 콘텐츠의 행동 수치가 본래 <strong>자연수 단위(0 이상의 정수)</strong>로 제공되기 때문입니다.<br><br>
+
+          또한, 이전 값과의 비교를 위해<br>
+          과거 행동 수치선 및 과거 비율 평균선의 경우에는<br>
+          <strong>소수점 둘째 자리까지 반올림하여 시각적으로 표기</strong>하였습니다.<br><br>
+
+          참여율과 반응률은 단순히 반올림된 수치를 대입한 것이 아니라,<br>
+          <strong>전체 합계를 기준으로 정확히 계산한 후, 소수점 둘째 자리까지 반올림한 값</strong>입니다.<br><br>
+
+          → 이러한 기준을 바탕으로 수치가 일관되게 정리되었으며,<br>
+          <strong>상대 비교나 변화 추이는 차트를 통해 시각적으로 확인하실 수 있습니다.</strong>
+        </p>
 
       <h3>📌 콘텐츠 ①: 체험 릴스 (여성, 반말 ver)</h3>
     <!--   <a href="https://www.instagram.com/reel/DJWWQNuvikK/?utm_source=ig_web_copy_link" target="_blank">
@@ -215,6 +231,7 @@
       <h2>체험 릴스 성과 요약</h2>
       <p style="margin-top:20px;font-size:14px;color:#666;">
         ※ 아래 수식은 전체 체험 릴스 콘텐츠의 <strong>참여율</strong> 및 <strong>반응률</strong>을 <strong>가중 평균</strong> 방식으로 자동 계산한 결과입니다.
+      (※ 좋아요, 댓글, 저장, 공유도 평균값 기준)
       </p>
       <pre id="totalFormulaBlock" style="background:#f8f9fa;border:1px solid #ddd;padding:12px;font-size:14px;border-radius:8px;line-height:1.6;margin-top:10px;"></pre>
       <div class="chart-container">
@@ -273,6 +290,7 @@
       <h2>ASMR 콘텐츠 성과 요약</h2>
       <p style="margin-top:20px;font-size:14px;color:#666;">
         ※ 아래 수식은 전체 ASMR 콘텐츠의 <strong>참여율</strong> 및 <strong>반응률</strong>을 <strong>가중 평균</strong> 방식으로 자동 계산한 결과입니다.
+      (※ 좋아요, 댓글, 저장, 공유도 평균값 기준)
       </p>
       <pre id="asmrFormulaBlock" style="background:#f8f9fa;border:1px solid #ddd;padding:12px;font-size:14px;border-radius:8px;line-height:1.6;margin-top:10px;"></pre>
        <div class="chart-container">
@@ -314,6 +332,7 @@
   <h2>캐릭터 콘텐츠 성과 요약</h2>
         <p style="margin-top:20px;font-size:14px;color:#666;">
         ※ 아래 수식은 전체 캐릭터 콘텐츠의 <strong>참여율</strong> 및 <strong>반응률</strong>을 <strong>가중 평균</strong> 방식으로 자동 계산한 결과입니다.
+      (※ 좋아요, 댓글, 저장, 공유도 평균값 기준)
       </p>
   <pre id="characterSummaryFormula" style="background:#f8f9fa;border:1px solid #ddd;padding:12px;font-size:14px;border-radius:8px;line-height:1.6;" class="formula-block"></pre>
   <div class="chart-container"><canvas id="characterSummaryChart"></canvas></div>
@@ -339,6 +358,7 @@
   <h2>밈/챌린지 콘텐츠 성과 요약</h2>
         <p style="margin-top:20px;font-size:14px;color:#666;">
         ※ 아래 수식은 전체 밈/챌린지 콘텐츠의 <strong>참여율</strong> 및 <strong>반응률</strong>을 <strong>가중 평균</strong> 방식으로 자동 계산한 결과입니다.
+         (※ 좋아요, 댓글, 저장, 공유도 평균값 기준)
       </p>
   <pre id="memeChallengeFormula" style="background:#f8f9fa;border:1px solid #ddd;padding:12px;font-size:14px;border-radius:8px;line-height:1.6;" class="formula-block"></pre>
   <div class="chart-container"><canvas id="memeChallengeChart"></canvas></div>
@@ -364,6 +384,7 @@
   <h2>NG 콘텐츠 성과 요약</h2>
           <p style="margin-top:20px;font-size:14px;color:#666;">
         ※ 아래 수식은 전체 NG 콘텐츠의 <strong>참여율</strong> 및 <strong>반응률</strong>을 <strong>가중 평균</strong> 방식으로 자동 계산한 결과입니다.
+        (※ 좋아요, 댓글, 저장, 공유도 평균값 기준)
       </p>
   <pre id="ngSummaryFormula" style="background:#f8f9fa;border:1px solid #ddd;padding:12px;font-size:14px;border-radius:8px;line-height:1.6;" class="formula-block"></pre>
   <div class="chart-container"><canvas id="ngSummaryChart"></canvas></div>
@@ -373,6 +394,7 @@
       <h2>전체 콘텐츠 성과</h2>
       <p style="margin-top:20px;font-size:14px;color:#666;">
         ※ 아래 수식은 전체 콘텐츠의 <strong>참여율</strong> 및 <strong>반응률</strong>을 <strong>가중 평균</strong> 방식으로 자동 계산한 결과입니다.
+        (※ 좋아요, 댓글, 저장, 공유도 평균값 기준)
       </p>
       <pre id="overallFormulaBlock" style="background:#f8f9fa;border:1px solid #ddd;padding:12px;font-size:14px;border-radius:8px;line-height:1.6;"></pre>
       <div class="chart-container">
