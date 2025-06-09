@@ -84,14 +84,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     ['charInfo1Chart', '캐릭터(1)', sum('char1')],
     ['charInfo2Chart', '캐릭터(2)', sum('char2')],
     ['slowAgingChart', '저속노화', sum('slow')],
-    ['characterSummaryChart', '캐릭터 콘텐츠 전체 평균', avg(['teamLeader', 'char1', 'char2', 'slow'], 3)],
+    ['characterSummaryChart', '캐릭터 콘텐츠 전체 평균', avg(['teamLeader', 'char1', 'char2', 'slow'], 4)],
     ['noknokChart', '녹녹디어', sum('noknok')],
     ['goodthingChart', '굿띵 챌린지', sum('good')],
-    ['memeChallengeChart', '밈/챌린지 콘텐츠 전체 평균', avg(['noknok', 'good'], 1)],
+    ['memeChallengeChart', '밈/챌린지 콘텐츠 전체 평균', avg(['noknok', 'good'], 2)],
     ['ng1Chart', 'NG컷 1', sum('ng1')],
     ['ng2Chart', 'NG컷 2', sum('ng2')],
     ['ngSummaryChart', 'NG 콘텐츠 전체 평균', avg(['ng1', 'ng2'], 2)],
-    ['overallChart', '전체 콘텐츠 평균', avg(['female','male','asmr','shake','teamLeader','char1','char2','slow','noknok','good','ng1','ng2'], 10)]
+    ['overallChart', '전체 콘텐츠 평균', avg(['female','male','asmr','shake','teamLeader','char1','char2','slow','noknok','good','ng1','ng2'], 12)]
   ];
 
   function makeChart(id, title, stats) {
@@ -201,11 +201,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         labels: [
           '5월 19일 (3편)', '5월 20일 (3편)', '5월 21일 (4편)',
           '5월 22일 (4편)', '5월 23일 (5편)', '6월 4일 (9편)',
-          '6월 5일 (10편)'
+          '6월 5일 (10편)', '6월 9일 (11편)'
         ],
         datasets: [{
           label: '참여율 (%)',
-          data: [2.33, 2.64, 2.78, 2.79, 2.85, 3.62, 3.83],
+          data: [2.33, 2.64, 2.78, 2.79, 2.85, 3.62, 3.83, 3.82],
           borderColor: '#3498db',
           backgroundColor: 'transparent',
           borderWidth: 2,
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         {
           label: '목표선 (3배 기준)',
-          data: [3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0],
+          data: [3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0],
           borderColor: 'red',
           borderDash: [6, 6],
           borderWidth: 2,
