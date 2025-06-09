@@ -200,11 +200,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       data: {
         labels: [
           '5월 19일 (3편)', '5월 20일 (3편)', '5월 21일 (4편)',
-          '5월 22일 (4편)', '5월 23일 (5편)', '6월 4일 (9편)'
+          '5월 22일 (4편)', '5월 23일 (5편)', '6월 4일 (9편)',
+          '6월 5일 (10편)'
         ],
         datasets: [{
           label: '참여율 (%)',
-          data: [2.33, 2.64, 2.78, 2.79, 2.85, 3.62],
+          data: [2.33, 2.64, 2.78, 2.79, 2.85, 3.62, 3.83],
           borderColor: '#3498db',
           backgroundColor: 'transparent',
           borderWidth: 2,
@@ -212,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         {
           label: '목표선 (3배 기준)',
-          data: [3.0, 3.0, 3.0, 3.0, 3.0, 3.0],
+          data: [3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0],
           borderColor: 'red',
           borderDash: [6, 6],
           borderWidth: 2,
